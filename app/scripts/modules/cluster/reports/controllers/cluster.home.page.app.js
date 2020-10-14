@@ -221,6 +221,15 @@ angular.module( 'ngmReportHub' )
 										return href;
 									},
 
+									getAccessToCustomConfigMenu: function () {
+										var roles = $scope.report.user.roles;
+										var access = false;
+										if ((roles.indexOf('SUPERADMIN') >= 0) || (roles.indexOf('COUNTRY_ADMIN') >= 0) || (roles.indexOf('CLUSTER') >= 0) || (roles.indexOf('COUNTRY') >= 0)) {
+											access = true;
+										}
+										return access
+									},
+
 									report_date: moment().subtract( 1, 'M').endOf( 'M' ).format('YYYY-MM-DD'),
 									templateUrl: '/scripts/modules/cluster/views/cluster.home.page.html',
 					      }
