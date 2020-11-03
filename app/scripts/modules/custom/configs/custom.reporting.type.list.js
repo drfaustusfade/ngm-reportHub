@@ -304,22 +304,18 @@ angular.module('ngmReportHub')
                                     // color: 'teal lighten-4',
                                     color: 'blue lighten-1',
                                     textColor: 'white-text',
-                                    title: 'List',
+                                    title: 'Active',
                                     icon: 'edit',
+                                    report_type_id: $route.current.params.report_type_id,
                                     templateUrl: '/scripts/widgets/ngm-list/template/reporting_type_list.html',
-                                    data:[{id:'dummy-type-list',reporting_type_id:'dummy'}]
-                                    // request: {
-                                    //     method:'GET',
-                                    //     url: ngmAuth.LOCATION + '/api/custom/config/getCustomLists'',
-                                    //     params:{
-                                    //         admin0pcode: $route.current.params.admin0pcode,
-                                    //         list_type_id:'project'
-                                    //          form_id:'',
-                                    //          reporting_type_id:'', 
-                                    //          list_type_id:'', 
-                                    //          status:''
-                                    //     }
-                                    // }
+                                     request: {
+                                        method: 'GET',
+                                        url: ngmAuth.LOCATION + '/api/custom/config/getCustomLists',
+                                        params: {
+                                            list_type_id: 'project',
+                                            status: 'active'
+                                        }
+                                    }
                                 }
                             }]
                         }]

@@ -146,7 +146,32 @@
 
     <!-- CARD PANEL -->
 
-    <div ng-include="project.templatesUrl + project.formBeneficiaries()"></div>
+    <!-- <div ng-include="project.templatesUrl + project.formBeneficiaries()"></div> -->
+    <div ng-if="templateBeneficiariesFormUrl" ng-include="project.formBeneficiaries()"></div>
+    <!-- Template string  path file-->
+    <!-- <div ng-if="templateBeneficiariesFormAPIString" id="template-beneficiaries-string"></div> -->
+    <!-- Template from API type json -->
+    <div ng-if="templateBeneficiariesFormAPIJSON" dir="ltr" class="card-panel" ng-if="detailBeneficiaries[$locationIndex][$beneficiaryIndex]"
+    ng-class="{'card-panel-expand':detailBeneficiaries[$locationIndex][$beneficiaryIndex]}"
+    ng-disabled="!project.canEdit">
+        <form-beneficiaries
+            formid="{{ project.beneficiariesFormConfig && project.beneficiariesFormConfig.keys && project.beneficiariesFormConfig.keys.key }}">
+        </form-beneficiaries>
+    </div>
+    <!-- Template from API type HTML -->
+    <div ng-if="templateBeneficiariesFormAPIString" dir="ltr" class="card-panel" ng-class="{'card-panel-expand':detailBeneficiaries[$locationIndex][$beneficiaryIndex]}"
+    ng-disabled="!project.canEdit">
+        <form-html-beneficiaries
+            formid='{{ project.beneficiariesFormConfig && project.beneficiariesFormConfig.keys && project.beneficiariesFormConfig.keys.key }}'>
+        </form-html-beneficiaries>
+    </div>
+    <!-- If form is missing or not in config -->
+    <div ng-if="templateBeneficiariesFormAPInotDefined" class="card-panel">
+        <div style="text-align: center; border: 3px dotted #888888; background-color: #d6d6d6;">
+            <h5 class="white-text">FORM IS UNDEFINED!</h5>
+        </div>
+    </div>
+   
 </div>
 
 <!-- buttons -->

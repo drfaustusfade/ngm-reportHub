@@ -274,25 +274,28 @@ angular.module("ngm.materialize.form", [])
 						// }
 				};
 			})
-			.directive('formHtmlBeneficiaries', function ($compile) {
+	.directive('formHtmlBeneficiaries', function ($compile) {
 
-				var linker = function (scope, element, attrs) {
+		var linker = function (scope, element, attrs) {
 
-								if (!scope.project || !scope.project.beneficiariesFormConfig  || !attrs.formid || !scope.project.beneficiariesFormConfig[attrs.formid] || !scope.project.beneficiariesFormConfig[attrs.formid].config || !scope.project.beneficiariesFormConfig[attrs.formid].config.html) {
-									form = `<div>beneficiariesFormConfig formid config is not defined</div>`;
-								} else {
-									var form = scope.project.beneficiariesFormConfig[attrs.formid].config.html;
-								}
-								console.log(form);
-								element.html(form);
+			if (!scope.project || !scope.project.beneficiariesFormConfig || !attrs.formid || !scope.project.beneficiariesFormConfig[attrs.formid] || !scope.project.beneficiariesFormConfig[attrs.formid].config || !scope.project.beneficiariesFormConfig[attrs.formid].config.html) {
+				// form = `<div>beneficiariesFormConfig formid config is not defined</div>`;
+				form=`<div style="text-align: center; border: 3px dotted #888888; background-color: #d6d6d6;">
+					<h5 class="white-text">beneficiariesFormConfig formid config is not defined</h5>
+				</div>`;
+			} else {
+				var form = scope.project.beneficiariesFormConfig[attrs.formid].config.html;
+			}
+			console.log(form);
+			element.html(form);
 
-								$compile(element.contents())(scope);
-				};
+			$compile(element.contents())(scope);
+		};
 
-				return {
-						restrict: 'E',
-						// transclude: true,
-						link: linker,
-						scope: false,
-				};
-		});
+		return {
+			restrict: 'E',
+			// transclude: true,
+			link: linker,
+			scope: false,
+		};
+	});

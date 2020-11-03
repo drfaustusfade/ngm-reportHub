@@ -401,16 +401,14 @@ angular.module('ngmReportHub')
                                     title: 'Active Report Type',
                                     icon: 'edit',
                                     templateUrl: '/scripts/widgets/ngm-list/template/report_type_list.html',
-                                    data:[{admin0pcode:'ALL',id:'dummy'}]
-                                    // request: {
-                                    //     method:'GET',
-                                    //     url: ngmAuth.LOCATION + '/api/custom/config/getCustomReportingTypes',
-                                    //     params:{
-                                    //         admin0pcode: $route.current.params.admin0pcode,
-                                    //         status:'active'
-                                    //         reporting_type_id:'',
-                                    //         status:'',
-                                    //     }
+                                    request: {
+                                        method:'GET',
+                                        url: ngmAuth.LOCATION + '/api/custom/config/getCustomReportingTypes',
+                                        params:{
+                                            admin0pcode: $route.current.params.admin0pcode,
+                                            status:'active'
+                                        }
+                                    }
                                 }
                             }]
                         }]
@@ -428,14 +426,15 @@ angular.module('ngmReportHub')
                                         textColor: 'white-text',
                                         title: 'Complete Report Type',
                                         icon: 'edit',
-                                        templateUrl: '/scripts/widgets/ngm-list/template/global_list.html'
-                                        // request: {
-                                        //     method:'GET',
-                                        //     url: ngmAuth.LOCATION + '/api/getCustomActivityDefinitions',
-                                        //     params:{
-                                        //         admin0pcode: $route.current.params.admin0pcode,
-                                        //         status:'complete'
-                                        //     }
+                                        templateUrl: '/scripts/widgets/ngm-list/template/global_list.html',
+                                        request: {
+                                            method: 'GET',
+                                            url: ngmAuth.LOCATION + '/api/custom/config/getCustomReportingTypes',
+                                            params: {
+                                                admin0pcode: $route.current.params.admin0pcode,
+                                                status: 'complete'
+                                            }
+                                        }
                                     }
                                 }]
                             }]

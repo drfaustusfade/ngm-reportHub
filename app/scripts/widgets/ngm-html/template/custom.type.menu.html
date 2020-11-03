@@ -20,7 +20,7 @@
         <p>Are you sure want to mark this "Report Type" as  "Complete" ?</p>
     </div>
     <div class="modal-footer">
-        <a ng-click="panel.markComplete( panel.project )"
+        <a ng-click="panel.markComplete( panel.reporting_config )"
             class=" modal-action modal-close waves-effect waves-green btn">Yes, Report Type Complete!</a>
         <a class=" modal-action modal-close waves-effect waves-green btn-flat">No</a>
     </div>
@@ -34,7 +34,7 @@
         <p> Are You Surw Want to Delete this Report Type?</p>
     </div>
     <div class="modal-footer">
-        <a ng-click=""
+        <a ng-click="panel.delete( panel.reporting_config )"
             class=" modal-action modal-close waves-effect waves-red btn">Yes, Delete Report Type!</a>
         <a class=" modal-action modal-close waves-effect waves-green btn-flat">No</a>
     </div>
@@ -49,7 +49,7 @@
         <p>Are you sure want to mark this "Report Type" as "Active" ??</p>
     </div>
     <div class="modal-footer">
-        <a ng-click="panel.markActive()"
+        <a ng-click="panel.markActive(panel.reporting_config)"
             class=" modal-action modal-close waves-effect waves-green btn"> Yes, Move Report Type to Active!</a>
         <a class=" modal-action modal-close waves-effect waves-green btn-flat">No</a>
     </div>
@@ -57,7 +57,7 @@
 
 <div class="row">
     <div class="col s12 m12 l4">
-        <a href="#/custom/config/report-types-detail/{{panel.admin0pcode}}/{{panel.report_type_id}}">
+        <a href="#/custom/config/report-types-detail/{{panel.reporting_config.admin0pcode.toLowerCase()}}/{{panel.reporting_config.reporting_type_id}}">
             <div class="card small blue-grey darken-1 hoverable">
                 <div class="card-image">
                     <img src="images/cluster/details-1.jpg">
@@ -68,13 +68,13 @@
                 </div>
                 <div class="card-action">
                     <a class="left"
-                        href="#/custom/config/report-types-detail/{{panel.admin0pcode}}/{{panel.report_type_id}}">Go To Definition</a>
+                        href="#/custom/config/report-types-detail/{{panel.reporting_config.admin0pcode}}/{{panel.reporting_config.reporting_type_id}}">Go To Definition</a>
                 </div>
             </div>
         </a>
     </div>
     <div class="col s12 m12 l4">
-        <a href="#/custom/config/reporting-types/{{panel.report_type_id}}">
+        <a href="#/custom/config/reporting-types/{{panel.reporting_config.reporting_type_id}}">
             <div class="card small blue-grey darken-1 hoverable">
                 <div class="card-image">
                     <img src="images/cluster/reports.jpg">
@@ -84,13 +84,13 @@
                 </div>
                 <div class="card-action">
                     <a class="left"
-                        href="#/custom/config/reporting-types/{{panel.report_type_id}}">Go to Type List</a>
+                        href="#/custom/config/reporting-types/{{panel.reporting_config.reporting_type_id}}">Go to Type List</a>
                 </div>
             </div>
         </a>
     </div>
     <div class="col s12 m12 l4">
-        <a href="#/custom/config/report-beneficiaries-forms/{{panel.report_type_id}}">
+        <a href="#/custom/config/report-beneficiaries-forms/{{panel.reporting_config.reporting_type_id}}">
             <div class="card small blue-grey darken-1 hoverable">
                 <div class="card-image">
                     <img src="images/cluster/monthly_report.jpg">
@@ -100,7 +100,7 @@
                 </div>
                 <div class="card-action">
                     <a class="left"
-                        href="#/custom/config/report-beneficiaries-forms/{{panel.report_type_id}}"> Go to Beneficiaries Form Lists</a>
+                        href="#/custom/config/report-beneficiaries-forms/{{panel.reporting_config.reporting_type_id}}"> Go to Beneficiaries Form Lists</a>
                 </div>
             </div>
         </a>

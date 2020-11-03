@@ -328,7 +328,7 @@ angular.module('ngmReportHub')
                         }
 
                         // for other 
-                        if (select[0].set_attributes && select[0].set_attributes.length){
+                        if (select && select.length && select[0].set_attributes && select[0].set_attributes.length){
                             var att_name = select[0].set_attributes;
                             angular.forEach(att_name, function(att){
                                 beneficiary[att]= select[0][att]

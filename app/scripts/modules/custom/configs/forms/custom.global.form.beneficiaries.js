@@ -18,6 +18,7 @@ angular.module('ngm.widget.global.form.beneficiaries', ['ngm.provider'])
         '$timeout',
         '$filter',
         '$location',
+        '$route',
         function (
             $scope,
             config,
@@ -27,7 +28,8 @@ angular.module('ngm.widget.global.form.beneficiaries', ['ngm.provider'])
             $http,
             $timeout,
             $filter,
-            $location
+            $location,
+            $route
         ) {
 
             $scope.inputString = true;
@@ -36,17 +38,49 @@ angular.module('ngm.widget.global.form.beneficiaries', ['ngm.provider'])
                 // current user
                 user: ngmUser.get(),
                 definition: config.definition,
+                newForm: $route.current.params.id ==='new' ? true :false,
                 validate: function () {
-                    json = JSON.parse($scope.master.definition)
-                    missing = '';
-
-                    if (!json.activity) {
-                        missing += 'activity </br>'
-
+                    if($scope.inputString){
+                        json = JSON.parse($scope.master.definition)
+                    }else{
+                        json = $scope.master.definition;
                     }
+                    if (!$scope.master.newForm) {
+                        json = { form: json }
+                    }
+                    missing = '';
+                    if(!json.form){
+                        missing += 'form </br>'
+                    }else{
+                        if(!json.form.admin0pcode){
+                            missing +='admin0pcode </br>'
+                        }
+                        if(!json.form.form_id){
+                            missing +=' form_id </br>'
+                        }
+                        if (!json.form.form_type_id || json.form.form_type_id !== 'global'){
+                            missing +='form_type_id</br>'
+
+                            if (json.form.form_type_id !== 'global'){
+                                missing += 'form_type_id value should be "global"</br>'
+                            }
+                        }
+                        if(!json.form.type){
+                            missing +='type </br>'
+                        }
+                        if(!json.form.config){
+                            missing +='config </br>'
+                        }
+                    }
+                    
                     if(missing !==''){
                         M.toast({ html: 'Please Put The missing atribute below </br>' + missing, displayLength: 4000, classes: 'error' });
                     } else{
+                        if ($scope.inputString) {
+                            $scope.master.definition = JSON.parse($scope.master.definition)
+                        } else {
+                            $scope.master.definition = $scope.master.definition;
+                        }
                         $scope.master.save();
                     }
 
@@ -59,6 +93,9 @@ angular.module('ngm.widget.global.form.beneficiaries', ['ngm.provider'])
                 // },
                 switchInputFile: function(){
                     $scope.inputString = !$scope.inputString;
+                    if ($scope.inputString && typeof $scope.master.definition === 'object'){
+                        $scope.master.definition = JSON.parse($scope.master.definition)
+                    }
                 },
 
                 uploadFileConfig: {
@@ -220,33 +257,93 @@ angular.module('ngm.widget.global.form.beneficiaries', ['ngm.provider'])
 
                 init: function () {
 
+                    if ($scope.inputString && typeof $scope.master.definition === 'object') {
+                        // console.log($scope.master.definition)
+                        $scope.master.definition = JSON.stringify($scope.master.definition)
+                    }
+
                 },
-                remove: function (id) {
+                removeForm: function () {
+                    if (typeof $scope.master.definition === 'string'){
+                        $scope.master.definition = JSON.parse($scope.master.definition)
+                    }
+                    
                     // setReportRequest
-                    // var setReportRequest = {
-                    //     method: 'POST',
-                    //     url: ngmAuth.LOCATION + '/api/custom/config/deleteCustomBeneficiariesForm/',
-                    //     params:{id : id}
-                    // }
+                    var setReportRequest = {
+                        method: 'DELETE',
+                        url: ngmAuth.LOCATION + '/api/custom/config/deleteCustomBeneficiariesForm/' + $scope.master.definition.id,
+                        // params: { id: $scope.master.definition.id}
+                    }
 
-                    // // set report
-                    // $http(setReportRequest).success(function () {
+                    M.toast({ html: 'Processing...', displayLength: 2000, classes: 'note' });
+                    // set report
+                    $http(setReportRequest).success(function (response) {
+                        if(!response.err){
+                            $timeout(function(){
+                                M.toast({ html: 'Success Delete Form', displayLength: 3000, classes: 'success' });
+                                $location.path('/custom/config/beneficiaries-forms/')
+                            },2000)
+                            
 
-                    // })
+                        } else {
+                            if (typeof $scope.master.definition === 'object') {
+                                $scope.master.definition = JSON.stringify($scope.master.definition)
+                            }
+                            M.toast({ html: 'Error!', displayLength: 3000, classes: 'success' });
+                        }
+                    }).error(function (err) {
+
+                        if (typeof $scope.master.definition === 'object') {
+                            $scope.master.definition = JSON.stringify($scope.master.definition)
+                        }
+                        M.toast({ html: 'Error!', displayLength: 3000, classes: 'error' });
+                    })
+                },
+                cancel:function(){
+                    if ($scope.master.newForm) {
+                        M.toast({ html: 'Cancel create new list', displayLength: 3000, classes: 'success' });
+                    } else {
+                        M.toast({ html: 'Cancel Update', displayLength: 3000, classes: 'success' });
+                    }
+
+                    $location.path('/custom/config/beneficiaries-forms/')
                 },
                 save: function(){
                     // setReportRequest
-                    // var setReportRequest = {
-                    //     method: 'POST',
-                    //     url: ngmAuth.LOCATION + '/api/custom/config/saveCustomBeneficiariesForm',
-                    //     data: $scope.master.definition
-                    // }
+                    if (typeof $scope.master.definition === 'string'){
+                        $scope.master.definition = JSON.parse($scope.master.definition)
+                    }
+                    if (!$scope.master.newForm) {
+                        $scope.master.definition = { form: $scope.master.definition }
+                    }
+                    var setReportRequest = {
+                        method: 'POST',
+                        url: ngmAuth.LOCATION + '/api/custom/config/saveCustomBeneficiariesForm',
+                        data: $scope.master.definition
+                    }
+                    M.toast({ html: 'Processing...', displayLength: 3000, classes: 'note' });
+                    // set report
+                    $http(setReportRequest).success(function (response) {
+                        if (!response.err) {
+                            if (typeof $scope.master.definition === 'object'){
+                                $scope.master.definition = JSON.stringify(response)
+                            }else{
+                                $scope.master.definition = response
+                            }
+                            $timeout(function(){
+                                if ($scope.master.newForm) {
+                                    M.toast({ html: 'Success Create New Form', displayLength: 3000, classes: 'success' });
+                                    $location.path('/custom/config/beneficiaries-forms/')
+                                } else {
+                                    M.toast({ html: 'Successfully Update Form', displayLength: 3000, classes: 'success' });
+                                }
+                            },2000)
+                            
 
-                    // // set report
-                    // $http(setReportRequest).success(function () {
+                        }
 
-                    // })
-                    $location.path('/custom/config/beneficiaries-forms/')
+                    })
+                    
                 }
             }
 

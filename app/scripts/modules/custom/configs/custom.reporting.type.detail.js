@@ -135,24 +135,29 @@ angular.module('ngmReportHub')
         }
         // run page
         if ($route.current.params.id === 'new') {
-            var x = JSON.stringify({
-                activity: ''
-            })
-            $scope.config.init(x);
+            var template = {
+                list: {
+                    admin0pcode: 'all',
+                    list_id: $route.current.params.report_type_id,
+                    list_type_id: "project",
+                    list: [{}]
+                }
+            }
+            $scope.config.init(template);
         } else {
             var req = {
                 method: 'GET',
-                url: ngmAuth.LOCATION + 'apigetCustomList?list_id=' + $route.current.params.id
+                url: ngmAuth.LOCATION + '/api/custom/config/getCustomList?list_id=' + $route.current.params.id
             }
-            var x = JSON.stringify({
-                activity: 'a'
-            })
-            $scope.config.init(x);
+            // var x = JSON.stringify({
+            //     activity: 'a'
+            // })
+            // $scope.config.init(x);
             // if API exist
-            // ngmData.get(req).then(function (data) {
+            ngmData.get(req).then(function (data) {
 
-            //     $scope.config.init(data);
-            // });
+                $scope.config.init(data);
+            });
 
 
         }

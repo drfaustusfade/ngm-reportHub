@@ -305,19 +305,16 @@ angular.module('ngmReportHub')
                                     textColor: 'white-text',
                                     title: 'List',
                                     icon: 'edit',
+                                    report_type_id: $route.current.params.report_type_id,
                                     templateUrl: '/scripts/widgets/ngm-list/template/reporting_list_beneficiaries.html',
-                                    data: [{ id: 'dummy' ,report_type_id:'dummy'}]
-                                    // request: {
-                                    //     method:'GET',
-                                    //     url: ngmAuth.LOCATION + '/api/custom/config/getCustomBeneficiariesForms',
-                                    //     params:{
-                                    //         admin0pcode: $route.current.params.admin0pcode,
-                                    //          form_id:'', 
-                                    //          reporting_type_id:'', 
-                                    //          form_type_id:'', 
-                                    //          status:''
-                                    //     }
-                                    // }
+                                    request: {
+                                        method: 'GET',
+                                        url: ngmAuth.LOCATION + '/api/custom/config/getCustomBeneficiariesForms',
+                                        params: {
+                                            form_type_id: 'project',
+                                            // status:'active'
+                                        }
+                                    }
                                 }
                             }]
                         }]

@@ -103,7 +103,6 @@ angular.module('ngmReportHub')
                                 style: 'padding:0px; height: 90px; padding-top:10px;',
                                 config: {
                                     style: $scope.config.ngm.style,
-                                    // list: data
                                     definition: data
                                 }
                             }]
@@ -133,32 +132,24 @@ angular.module('ngmReportHub')
         }
         // run page
         if ($route.current.params.id === 'new'){
-            var x = JSON.stringify({
+            var template = {
+                list: {
                 admin0pcode: $route.current.params.admin0pcode.toUpperCase(),
-                list_type_id: '',
-                date_start: '2020-01-10',
-                date_end: '2021-12-31',
-                reporting_type_id: 'text'
-            })
-            $scope.config.init(x);
+                list_id: "",
+                list_type_id: "global",
+                list: [{}]
+                }
+            }
+            $scope.config.init(template);
         }else{
             var req = {
                 method:'GET',
-                url: ngmAuth.LOCATION + 'api/custom/config/getCustomList?list_id=' + $route.current.params.id
+                url: ngmAuth.LOCATION + '/api/custom/config/getCustomList?list_id=' + $route.current.params.id
             }
-            var x = JSON.stringify({
-                admin0pcode: 'AF',
-                list_type_id: 'global',
-                date_start: '2020-01-10',
-                date_end: '2021-12-31',
-                reporting_type_id: 'text2'
-            })
-            $scope.config.init(x);
             // if API exist
-            // ngmData.get(req).then(function (data) {
-                
-            //     $scope.config.init(data);
-            // });
+            ngmData.get(req).then(function (data) {
+                $scope.config.init(data);
+            });
             
            
         }

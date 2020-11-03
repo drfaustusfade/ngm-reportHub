@@ -76,7 +76,7 @@ angular.module('ngm.widget.custom.schedule', ['ngm.provider'])
                 /**** DEFAULTS ****/
                 user: ngmUser.get(),
                 style: config.style,
-                list_schedules:[],
+                list_schedules: config.schedules,
 
                 /**** TEMPLATES ****/
 
@@ -119,13 +119,47 @@ angular.module('ngm.widget.custom.schedule', ['ngm.provider'])
                     //    date: moment().format('YYYY-MM-DD')
                     // };
 
-                    $scope.inserted = ngmCustomConfig.getCustomScheduleConfigAttribute($route.current.params.report_type_id)
+                    
+                    
+                    $scope.inserted = {data:ngmCustomConfig.getCustomScheduleConfigAttribute($route.current.params.report_type_id)}
+                    var schedule_shift_default_value = {
+                        schedule_shift_period: 1,
+                        schedule_shift_days: 1,
+                        report_start_date_shift_period: 1,
+                        report_start_date_shift_days: 1,
+                        report_end_date_shift_period: 1,
+                        report_end_date_shift_days: 1
+                    }
+                    var info={
+                        reporting_type_id: $route.current.params.report_type_id,
+                        admin0pcode:$scope.schedule.user.admin0pcode,
+                        organization_tag:$scope.schedule.user.organization_tag,
+                        cluster_id:$scope.schedule.user.cluster_id,
+                        username: $scope.schedule.user.username,
+                        filter:{
+                            cluster_id: $scope.schedule.user.cluster_id,
+                            adminRpcode: $scope.schedule.user.adminRpcode,
+                            admin0pcode: $scope.schedule.user.admin0pcode,
+                            organization_tag: $scope.schedule.user.organization_tag,
+                            admin1pcode: "all",
+                            admin2pcode: "all",
+                            report_type: $route.current.params.report_type,
+                            report_type_id: $route.current.params.report_type_id,
+                            start_date: $route.current.params.start,
+                            end_date:$route.current.params.end,
+                            indicator: "beneficiaries"
+                        }
+                    }
+                    $scope.inserted.data = angular.merge({}, schedule_shift_default_value,$scope.inserted.data,info)
+
+                    
 
 
                     // clone
                     var length = $scope.schedule.list_schedules.length;
                     if (length) {
                         var b = angular.copy($scope.schedule.list_schedules[length - 1]);
+                        delete b.data.name
                         delete b.id
                         $scope.inserted = angular.merge(b, $scope.inserted);
                     }
@@ -162,7 +196,7 @@ angular.module('ngm.widget.custom.schedule', ['ngm.provider'])
                         schedule[name] = null;
                     }
                 },
-                validate: function(){
+                validate: function($index){
                     divs=[]
                     complete = true
                     angular.forEach($scope.schedule.list_schedules,function(s,i){
@@ -180,11 +214,66 @@ angular.module('ngm.widget.custom.schedule', ['ngm.provider'])
 
                         // }
                     })
+
+                    var schedule = $scope.schedule.list_schedules[$index].data;
+                    if (!schedule.schedule_type ) {
+                        id = "label[for='" + 'ngm-schedule_type-' + $index + "']";
+                        $(id).addClass('error');
+                        divs.push(id);
+                        complete = false;
+                    }
+                    if (schedule.schedule_type === 'once' && !schedule.schedule_datetime) {
+                        id = "label[for='" + 'ngm-schedule_datetime-' + $index + "']";
+                            $(id).addClass('error');
+                            divs.push(id);
+                            complete = false;
+                    }
+                    if (!schedule.schedule_report_type ) {
+                        id = "label[for='" + 'ngm-schedule_report_type-' + $index + "']";
+                            $(id).addClass('error');
+                            divs.push(id);
+                            complete = false;
+                    }
+                    if (!schedule.schedule_period ) {
+                        
+                        id = "label[for='" + 'ngm-schedule_period-' + $index + "']";
+                            $(id).addClass('error');
+                            divs.push(id);
+                            complete = false;
+                    }
+                    if (!schedule.report_start_date_type ) {
+                        
+                        id = "label[for='" + 'ngm-report_start_date_type-' + $index + "']";
+                            $(id).addClass('error');
+                            divs.push(id);
+                            complete = false;
+                    }
+                    if (schedule.report_start_date_type === 'custom' && !schedule.report_start_date) {
+                        
+                        id = "label[for='" + 'ngm-report_start_date-' + $index + "']";
+                            $(id).addClass('error');
+                            divs.push(id);
+                            complete = false;
+                    }
+                    if (!schedule.report_end_date_type) {
+                        
+                        id = "label[for='" + 'ngm-report_end_date_type-' + $index + "']";
+                            $(id).addClass('error');
+                            divs.push(id);
+                            complete = false;
+                    }
+                    if (schedule.report_end_date_type === 'custom' && !schedule.report_end_date) {
+                        
+                        id = "label[for='" + 'ngm - report_end_date' + $index + "']";
+                            $(id).addClass('error');
+                            divs.push(id);
+                            complete = false;
+                    }
                     
                     if(!complete){
                         $(divs[0]).animatescroll();
                     }else{
-                        $scope.schedule.save();
+                        $scope.schedule.save($index);
                     }
                     
 
@@ -205,35 +294,53 @@ angular.module('ngm.widget.custom.schedule', ['ngm.provider'])
                         $scope.schedule.list_schedules.splice($index, 1);
                     }
                 },
-
-                removeSchedule: function ($index) {
-                    
+                remove:function($index){
+                    $('#remove-schedule-modal').modal({ dismissible: false });
+                    $('#remove-schedule-modal').modal('open');
+                    $scope.indexSchedule= $index;
+                },
+                removeSchedule: function () {
+                    var nameSchedule = $scope.schedule.list_schedules[$scope.indexSchedule].name;
                     $scope.schedule.isSaving = true;
                     M.toast({ html: 'Removing...', displayLength: 3000, classes: 'note' });
-                    $timeout(function () {
-                        $scope.schedule.list_schedules.splice($index, 1);
-                        M.toast({ html: 'Schedule Remove' + '!', displayLength: 3000, classes: 'success' });
-                        $scope.schedule.isSaving = false;
-                    }, 2000);
+                    $http({
+                        method:'DELETE',
+                        url: ngmAuth.LOCATION + '/api/custom/config/job/' + nameSchedule
+                    }).success(function(result){
+                        $timeout(function () {
+                            $scope.schedule.list_schedules.splice($scope.indexSchedule, 1);
+                            M.toast({ html: 'Schedule Remove' + '!', displayLength: 3000, classes: 'success' });
+                            $scope.schedule.isSaving = false;
+                            // $scope.schedule.list_schedules = result;
+                        }, 2000);
+                    })
+                   
                     
                 },
 
                 openCloseDetailSchedule:function($index){
                     $scope.detailSchedule[$index] = !$scope.detailSchedule[$index];
-                    $scope.schedules.initTimePicker()
+                    $scope.schedule.initTimePicker()
                 },
 
-                save: function(){
+                save: function($index){
                     $scope.schedule.isSaving = true;
                     M.toast({ html: 'Saving...', displayLength: 3000, classes: 'note' });
-                    angular.forEach($scope.schedule.list_schedules,(x)=>{
-                        x.id = Math.random(100000);
+                    $http({
+                        method:'POST',
+                        url: ngmAuth.LOCATION +'/api/custom/config/job',
+                        data:{
+                            data: $scope.schedule.list_schedules[$index].data
+                        }
+                    }).success(function(result){
+                        $timeout(function () {
+                            M.toast({ html: 'Schedule Added' + '!', displayLength: 3000, classes: 'success' });
+                            $scope.schedule.isSaving = false;
+                            $scope.schedule.list_schedules[$index] = result;
+                        }, 2000);
                     })
 
-                    $timeout(function () {
-                        M.toast({ html: 'Schedule Added' + '!', displayLength: 3000, classes: 'success' });
-                        $scope.schedule.isSaving = false;
-                    }, 2000);
+                    
 
                 }
 

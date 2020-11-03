@@ -4,9 +4,22 @@
     setTimeout(function () {
         $('textarea').height($('textarea')[0].scrollHeight);
         M.updateTextFields();
+        $('.modal').modal();
     });
 
 </script>
+<div id="remove-list-modal" class="modal">
+    <div class="modal-content dialog">
+        <h4 class="header-modal red lighten-2"><i class="material-icons left small">location_on</i>Remove List</h4>
+        <p>Are you sure want to remove this list it will affect</p>
+        <p style="color: #F44336;">THIS ACTION WILL REMOVE THIS LIST PERMANETLY</p>
+    </div>
+    <div class="modal-footer">
+        <a ng-click="master.remove()" class="modal-action modal-close waves-effect waves-green btn">YES REMOVE
+            LIST!</a>
+        <a class="modal-action modal-close waves-effect waves-green btn-flat">No</a>
+    </div>
+</div>
 
 <!-- bind html -->
 <div class="row">
@@ -61,14 +74,13 @@
                     ng-cloak><i class="material-icons mirror right">send</i>{{'save_mayus' | translate}}</button>
 
                 <!-- cancel new -->
-                <button data-target="list-modal"
-                    class="waves-effect waves-light btn modal-trigger grey">{{'cancel_mayus' | translate}}
+                <button ng-click="master.cancel()"
+                    class="waves-effect waves-light btn  grey">{{'cancel_mayus' | translate}}
                 </button>
 
-                <!-- cancel update -->
-                <button data-target="summary-modal" class="waves-effect waves-light btn modal-trigger grey" ng-if="project.definition.project_status === 'active' ||
-            										 project.definition.project_status === 'plan' || 
-            										 project.definition.project_status === 'not_implemented'">{{'cancel_mayus' | translate}}
+                <br />
+                <br />
+                <button data-target="remove-list-modal" class="waves-effect waves-light btn modal-trigger red" ng-if="!newList">Remove
                 </button>
 
             </div>

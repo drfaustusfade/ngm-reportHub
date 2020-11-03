@@ -607,7 +607,7 @@ angular.module('ngmReportHub')
                 },
 
                 // set dashboard
-                init: function () {
+                init: function (data) {
 
                     $scope.dashboard.adminRpcode = $route.current.params.adminRpcode;
                     $scope.dashboard.admin0pcode = $route.current.params.admin0pcode;
@@ -723,6 +723,7 @@ angular.module('ngmReportHub')
                                     widgets: [{
                                         type: 'custom.schedule',
                                         config: {
+                                            schedules:data
                                         }
                                     }]
                                 }]
@@ -756,12 +757,23 @@ angular.module('ngmReportHub')
                 }
 
             };
+            ngmData.get({
+                method: 'GET',
+                url: ngmAuth.LOCATION + '/api/custom/config/jobs',
+                params: {
+                    admin0pcode: $route.current.params.admin0pcode,
+                    reporting_type_id: $route.current.params.report_type_id,
+                    // organization_tag: $route.current.params.organization_tag,
+                    // cluster_id: $route.current.params.cluster_id
+                }
+            }).then(function (result) {
+                // set dashboard
+                $scope.dashboard.init(result.jobs);
 
-            // set dashboard
-            $scope.dashboard.init();
-
-            // assign to ngm app scope ( for menu )
-            $scope.dashboard.ngm.dashboard.model = $scope.model;
+                // assign to ngm app scope ( for menu )
+                $scope.dashboard.ngm.dashboard.model = $scope.model;
+            })
+            
         }
 
     ]);

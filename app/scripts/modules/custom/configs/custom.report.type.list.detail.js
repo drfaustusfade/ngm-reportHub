@@ -141,24 +141,29 @@ angular.module('ngmReportHub')
         }
         // run page
         if ($route.current.params.id === 'new') {
-            var x = JSON.stringify({
-                admin0pcode: $route.current.params.admin0pcode.toUpperCase()
-            })
+            var x = {
+                "definition": {
+                    "admin0pcode": $route.current.params.admin0pcode.toUpperCase(),
+                    "reporting_type_id": "",
+                    "config": {
+                    }
+                }
+            }
             $scope.config.init(x);
         } else {
             var req = {
                 method: 'GET',
-                url: ngmAuth.LOCATION + 'api/custom/config/getCustomReportingType?reporting_type_id=' + $route.current.params.id
+                url: ngmAuth.LOCATION + '/api/custom/config/getCustomReportingType?reporting_type_id=' + $route.current.params.id
             }
-            var x = JSON.stringify({
-                admin0pcode: 'AF'
-            })
-            $scope.config.init(x);
+            // var x = JSON.stringify({
+            //     admin0pcode: 'AF'
+            // })
+            // $scope.config.init(x);
             // if API exist
-            // ngmData.get(req).then(function (data) {
+            ngmData.get(req).then(function (data) {
 
-            //     $scope.config.init(data);
-            // });
+                $scope.config.init(data);
+            });
 
 
         }

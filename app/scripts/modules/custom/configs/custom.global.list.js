@@ -396,34 +396,46 @@ angular.module('ngmReportHub')
 									// color: 'teal lighten-4',
 									color: 'blue lighten-1',
 									textColor: 'white-text',
-									title: 'List',
+									title: 'Active',
                                     icon: 'edit',
                                     templateUrl: '/scripts/widgets/ngm-list/template/global_list.html',
-                                    // dummy
-                                    data: [{
-                                        admin0pcode: 'AF',
-                                        list_type_id: 'global',
-                                        date_start: '2020-01-10',
-                                        date_end: '2021-12-31',
-                                        reporting_type_id: 'text2',
-                                        id:'dummy'
-                                    }]
-									 // request: {
-                                    //     method:'GET',
-                                    //     url: ngmAuth.LOCATION + '/api/custom/config/getCustomLists'',
-                                    //     params:{
-                                    //         admin0pcode: $route.current.params.admin0pcode,
-                                    //         list_type_id:'project'
-                                    //          form_id:'',
-                                    //          reporting_type_id:'', 
-                                    //          list_type_id:'', 
-                                    //          status:''
-                                    //     }
-                                    // }
+									 request: {
+                                        method:'GET',
+                                        url: ngmAuth.LOCATION + '/api/custom/config/getCustomLists',
+                                        params:{
+                                            list_type_id:'global',
+                                            status:'active'
+                                        }
+                                    }
 								}
 							}]
 						}]
-					}, {
+                        }, {
+                            columns: [{
+                                styleClass: 's12 m12 l12',
+                                widgets: [{
+                                    type: 'list',
+                                    card: 'white grey-text text-darken-2',
+                                    config: {
+                                        titleIcon: 'alarm_on',
+                                        // color: 'teal lighten-4',
+                                        color: 'blue lighten-1',
+                                        textColor: 'white-text',
+                                        title: 'Complete',
+                                        icon: 'edit',
+                                        templateUrl: '/scripts/widgets/ngm-list/template/global_list.html',
+                                        request: {
+                                            method: 'GET',
+                                            url: ngmAuth.LOCATION + '/api/custom/config/getCustomLists',
+                                            params: {
+                                                list_type_id: 'global',
+                                                status: 'complete'
+                                            }
+                                        }
+                                    }
+                                }]
+                            }]
+                        }, {
                         columns: [{
                             styleClass: 's12 m12 l12',
                             widgets: [{

@@ -10,39 +10,43 @@
 </script>
 
 <style>
-    .dropzone .dz-preview .dz-details{
-		padding: 3em 1em;
-		color:#000000;
-		background: rgba(255,255,255, 0.2) !important;
-	}
-    .percent-upload {
-		display: none;
+    .dropzone .dz-preview .dz-details {
+        padding: 3em 1em;
+        color: #000000;
+        background: rgba(255, 255, 255, 0.2) !important;
     }
-    .remove-upload.btn-floating{
-		position: absolute;
-		top: -14px;
-		right:-12px;
-		z-index: 20;
-		width: 30px;
-	height: 30px;
-	line-height: 30px;
-		cursor: pointer !important;
-	}
-	.remove-upload.btn-floating i{
-		font-size: 20px;
-		line-height: 30px;
-	}
-	.dropzone .dz-preview .dz-details{
-		padding: 3em 1em;
-		color:#000000;
-		background: rgba(255,255,255, 0.2) !important;
-	}
+
+    .percent-upload {
+        display: none;
+    }
+
+    .remove-upload.btn-floating {
+        position: absolute;
+        top: -14px;
+        right: -12px;
+        z-index: 20;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        cursor: pointer !important;
+    }
+
+    .remove-upload.btn-floating i {
+        font-size: 20px;
+        line-height: 30px;
+    }
+
+    .dropzone .dz-preview .dz-details {
+        padding: 3em 1em;
+        color: #000000;
+        background: rgba(255, 255, 255, 0.2) !important;
+    }
 </style>
 <div id="remove-form-modal" class="modal">
     <div class="modal-content dialog">
         <h4 class="header-modal red lighten-2"><i class="material-icons left small">location_on</i>Remove Form</h4>
         <p>Are you sure want to remove this form it will affect</p>
-        <p style="color: #F44336;">THIS ACTION WILL REMOVE THIS FORM PERMANENTLY</p>
+        <p style="color: #F44336;">THIS ACTION WILL REMOVE THIS FORM PERMANETLY</p>
     </div>
     <div class="modal-footer">
         <a ng-click="master.removeForm()" class="modal-action modal-close waves-effect waves-green btn">YES REMOVE
@@ -71,25 +75,26 @@
                     <div class="row" ng-show="!inputString">
 
                         <div style="padding:20px;">
-                                <div>
-                                    <div id="dropzone">
-                                        <form ng-dropzone dropzone="dropzone" dropzone-config="master.uploadFileConfig"
-                                            enctype="multipart/form-data" class="dropzone needsclick dz-clickable">
-                                            <div class="fallback">
-                                                <input name="file" type="file" multiple />
+                            <div>
+                                <div id="dropzone">
+                                    <form ng-dropzone dropzone="dropzone" dropzone-config="master.uploadFileConfig"
+                                        enctype="multipart/form-data" class="dropzone needsclick dz-clickable">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple />
+                                        </div>
+                                        <div id="dropzone-message" class="center"></div>
+                                        <div class="percent-upload">
+                                            <div class=" percentage center"
+                                                style="font-weight: 400;font-size: 48px; margin-top:30px;">
                                             </div>
-                                            <div id="dropzone-message" class="center"></div>
-                                            <div class="percent-upload">
-                                                <div class=" percentage center" style="font-weight: 400;font-size: 48px; margin-top:30px;">
-                                                </div>
-                                                <div class="dz-progress progress">
-                                                    <div class="indeterminate dz-upload" data-dz-uploadprogress>
-                                                    </div>
+                                            <div class="dz-progress progress">
+                                                <div class="indeterminate dz-upload" data-dz-uploadprogress>
                                                 </div>
                                             </div>
-                                        </form>
-                                    </div>
+                                        </div>
+                                    </form>
                                 </div>
+                            </div>
                         </div>
 
                     </div>
@@ -97,8 +102,8 @@
                     <div class="row">
                         <div ng-show="inputString">
                             <div class="input-field col s12 m12 l12">
-                                <textarea id="ngm-project-notes" type="text" class="validate materialize-textarea" name="notes"
-                                    ng-model="master.definition">
+                                <textarea id="ngm-project-notes" type="text" class="validate materialize-textarea"
+                                    name="notes" ng-model="master.definition">
                                                             									</textarea>
                                 <label for="ngm-project-notes">Put Text Here</label>
                             </div>
@@ -117,11 +122,12 @@
 
             <!-- submission -->
             <div align="center">
-                <button ng-show="inputString" data-target="save-modal" class="waves-effect waves-light btn" ng-click="master.validate()"
-                    ng-cloak><i class="material-icons mirror right">send</i>{{'save_mayus' | translate}}</button>
-                
+                <button ng-show="inputString" data-target="save-modal" class="waves-effect waves-light btn"
+                    ng-click="master.validate()" ng-cloak><i
+                        class="material-icons mirror right">send</i>{{'save_mayus' | translate}}</button>
+
                 <button ng-show="!inputString" id="upload_file" class="waves-effect waves-light btn" ng-cloak><i
-                class="material-icons mirror right">send</i>Save</button>
+                        class="material-icons mirror right">send</i>Save</button>
 
                 <div ng-show="!inputString" id="delete_file" class="btn red">Remove ALl File</div>
 
@@ -135,14 +141,17 @@
             										 project.definition.project_status === 'plan' || 
             										 project.definition.project_status === 'not_implemented'">{{'cancel_mayus' | translate}}
                 </button>
-                <button ng-show="!inputString" class="waves-effect waves-light btn blue" ng-click="master.switchInputFile()" ng-cloak> Input Data
+                <button ng-show="!inputString" class="waves-effect waves-light btn blue"
+                    ng-click="master.switchInputFile()" ng-cloak> Input Data
                 </button>
-                <button ng-show="inputString" class="waves-effect waves-light btn blue" ng-click="master.switchInputFile()" ng-cloak> Upload File
+                <button ng-show="inputString" class="waves-effect waves-light btn blue"
+                    ng-click="master.switchInputFile()" ng-cloak> Upload File
                 </button>
 
                 <br>
                 <br>
-                <button  ng-if="!master.newForm"class="waves-effect waves-light btn red modal-trigger" ng-cloak data-target="remove-form-modal">
+                <button ng-if="!master.newForm" class="waves-effect waves-light btn red modal-trigger" ng-cloak
+                    data-target="remove-form-modal">
                     Remove FORM
                 </button>
 

@@ -101,7 +101,7 @@ angular.module( 'ngmReportHub' )
 					var countrylist = {
 						all:'All',
 						af: 'Afghanistan', bd: 'Bangladesh', cb: 'Cox Bazar',
-						cd: 'Democratic Republic of Congo', et: 'Ethiopia',
+						cd: 'Democratic Republic of Congo', et: 'Ethiopia', iq: 'Iraq',
 						so: 'Somalia', ss: 'South Sudan', sy: 'Syria', ua: 'Ukraine',
 						ye: 'Yemen', ng: 'Nigeria', col: 'Colombia', pg: 'Papua New Guinea',
 						phl: 'Philippines'

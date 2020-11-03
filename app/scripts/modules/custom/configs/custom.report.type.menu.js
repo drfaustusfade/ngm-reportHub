@@ -28,7 +28,7 @@ angular.module('ngmReportHub')
             title: '',
 
             // set summary
-            init: function () {
+            init: function (data) {
                 $scope.menu.title = 'Reporting Type Menu';
                 var subtitle = 'configuration';
 
@@ -71,62 +71,12 @@ angular.module('ngmReportHub')
                                 style: 'padding: 0px;',
                                 config: {
                                     templateUrl: '/scripts/widgets/ngm-html/template/custom.type.menu.html',
-                                    report_type_id: $route.current.params.report_type_id,
-                                    admin0pcode: 'all',
-                                    // markActive: function (project) {
-
-                                    //     // mark project active
-                                    //     project.project_status = 'active';
-
-                                    //     // timeout
-                                    //     $timeout(function () {
-                                    //         //   Materialize.toast( $filter('translate')('processing')+'...', 6000, 'note'); 
-                                    //         M.toast({ html: $filter('translate')('processing') + '...', displayLength: 6000, classes: 'note' });
-                                    //     }, 200);
-
-                                    //     // Submit project for save
-                                    //     ngmData.get({
-                                    //         method: 'POST',
-                                    //         url: ngmAuth.LOCATION + '/api/cluster/project/setProject',
-                                    //         data: {
-                                    //             project: project
-                                    //         }
-                                    //     }).then(function (data) {
-                                    //         // redirect on success
-                                    //         // Materialize.toast( $filter('translate')('project_moved_to_active')+'!', 6000, 'success');
-                                    //         M.toast({ html: $filter('translate')('project_moved_to_active') + '!', displayLength: 6000, classes: 'success' });
-                                    //     });
-
-                                    // },
-
-                                    // // mark poject complete
-                                    // markComplete: function (project) {
-
-                                    //     // mark project complete
-                                    //     project.project_status = 'complete';
-
-                                    //     // timeout
-                                    //     $timeout(function () {
-                                    //         //   Materialize.toast( $filter('translate')('processing')+'...', 6000, 'note'); 
-                                    //         M.toast({ html: $filter('translate')('processing') + '...', displayLength: 6000, classes: 'note' });
-                                    //     }, 200);
-
-                                    //     // Submit project for save
-                                    //     ngmData.get({
-                                    //         method: 'POST',
-                                    //         url: ngmAuth.LOCATION + '/api/cluster/project/setProject',
-                                    //         data: {
-                                    //             project: project
-                                    //         }
-                                    //     }).then(function (data) {
-                                    //         // redirect on success
-                                    //         $location.path('/cluster/projects/list');
-                                    //         // Materialize.toast( $filter('translate')('project_market_as_complete_congratulations')+'!', 6000, 'success');
-                                    //         M.toast({ html: $filter('translate')('project_market_as_complete_congratulations') + '!', displayLength: 6000, classes: 'success' });
-                                    //     });
-
-                                    // },
-                                    delete: function (report_type) {
+                                    // report_type_id: $route.current.params.report_type_id,
+                                    // admin0pcode: 'all',
+                                    reporting_config: data,
+                                    markActive: function (report_type_config) {
+                                        // mark report_type_config active
+                                        report_type_config.status = 'active';
 
                                         // timeout
                                         $timeout(function () {
@@ -135,28 +85,82 @@ angular.module('ngmReportHub')
                                         }, 200);
 
                                         // Submit project for save
-                                        $http({
+                                        ngmData.get({
                                             method: 'POST',
-                                            url: ngmAuth.LOCATION + '/api/custom/config/deleteCustomReportingType',
-                                            data: {
-                                                id: report_type.id
-                                            }
+                                            url: ngmAuth.LOCATION + '/api/custom/config/saveCustomReportingType',
+                                            data: report_type_config
+                                        }).then(function (data) {
+                                            // redirect on success
+                                            $timeout(function () {
+                                                $location.path('/custom/config/report-types/');
+                                                // Materialize.toast( $filter('translate')('project_market_as_complete_congratulations')+'!', 6000, 'success');
+                                                M.toast({ html: 'Congratulation Report Type Configuration Mark as Active!', displayLength: 6000, classes: 'success' });
+                                            },2000)
+                                            
+                                        });
+
+                                    },
+
+                                    // mark poject complete
+                                    markComplete: function (report_type_config) {
+                                        // mark report_type_config complete
+                                        report_type_config.status = 'complete';
+
+                                        report_type_config = { definition: report_type_config }
+
+                                        // timeout
+                                        $timeout(function () {
+                                            //   Materialize.toast( $filter('translate')('processing')+'...', 6000, 'note'); 
+                                            M.toast({ html: $filter('translate')('processing') + '...', displayLength: 6000, classes: 'note' });
+                                        }, 200);
+
+                                        // Submit project for save
+                                        ngmData.get({
+                                            method: 'POST',
+                                            url: ngmAuth.LOCATION + '/api/custom/config/saveCustomReportingType',
+                                            data: report_type_config
+                                        }).then(function (data) {
+                                            $timeout(function(){
+                                                // redirect on success
+                                                $location.path('/custom/config/report-types/');
+                                                // Materialize.toast( $filter('translate')('project_market_as_complete_congratulations')+'!', 6000, 'success');
+                                                M.toast({ html: 'Congratulation Report Type Configuration Mark as Complete!', displayLength: 6000, classes: 'success' });
+                                            },2000)
+                                            
+                                        });
+
+                                    },
+                                    delete: function (report_type_config) {
+
+                                        // timeout
+                                        
+                                            //   Materialize.toast( $filter('translate')('processing')+'...', 6000, 'note'); 
+                                            M.toast({ html: $filter('translate')('processing') + '...', displayLength: 3000, classes: 'note' });
+                                        
+
+                                        // Submit project for save
+                                        $http({
+                                            method: 'DELETE',
+                                            url: ngmAuth.LOCATION + '/api/custom/config/deleteCustomReportingType/' + report_type_config.id,
                                         }).success(function (data) {
 
                                             // redirect on success
                                             if (data.err) {
                                                 // Materialize.toast( $filter('translate')('project_delete_error_please_try_again'), 6000, 'error');
-                                                M.toast({ html: $filter('translate')('project_delete_error_please_try_again'), displayLength: 6000, classes: 'error' });
+                                                M.toast({ html: 'Repor Type Deleted Error, Please Try again', displayLength: 6000, classes: 'error' });
                                             }
                                             if (!data.err) {
-                                                $location.path('/cluster/projects/list');
-                                                // Materialize.toast( $filter('translate')('project_deleted')+'!', 6000, 'success');
-                                                M.toast({ html: $filter('translate')('project_deleted') + '!', displayLength: 6000, classes: 'success' });
+                                                $timeout(function(){
+                                                    $location.path('/custom/config/report-types/');
+                                                    // Materialize.toast( $filter('translate')('project_deleted')+'!', 6000, 'success');
+                                                    M.toast({ html: 'Report Type Deleted!', displayLength: 6000, classes: 'success' });
+                                                },2000)
+                                                
                                             }
                                         }).error(function (err) {
                                             // redirect on success
                                             // Materialize.toast( $filter('translate')('project_delete_error_please_try_again'), 6000, 'error');
-                                            M.toast({ html: $filter('translate')('project_delete_error_please_try_again'), displayLength: 6000, classes: 'error' });
+                                            M.toast({ html: 'Error,', displayLength: 6000, classes: 'error' });
                                         });
                                     }
                                 }
@@ -186,10 +190,12 @@ angular.module('ngmReportHub')
             }
 
         }
-        var req = {
+        ngmData.get( {
             method: 'GET',
-            url: ngmAuth.LOCATION + 'api/custom/config/getCustomReportingType?report_type_id=' + $route.current.params.report_type_id
-        }
-        $scope.menu.init()
+            url: ngmAuth.LOCATION + '/api/custom/config/getCustomReportingType?reporting_type_id=' + $route.current.params.report_type_id
+        }).then(function (data) {
+            $scope.menu.init(data)
+        });
+        
 
     }]);

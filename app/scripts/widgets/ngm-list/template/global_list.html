@@ -84,13 +84,13 @@
                 <div class="col s12">
 
                     <!-- no project code -->
-                    <a href="#/custom/config/global-detail/{{item.admin0pcode}}/{{ item.id }}"
+                    <a href="#/custom/config/global-detail/{{item.admin0pcode.toLowerCase()}}/{{ item.list_id }}"
                         title="{{'update_project' | translate}} {{ item.id }}">
                         <div>
 
                             <!-- title -->
                             <div style="color:#039be5; font-weight: 400; font-size: 1.2rem;">
-                                {{ item.reporting_type_id }} Sector
+                                List: {{ item.list_id }}
                             </div>
                             <!-- <div style="color:#039be5; font-weight: 400; font-size: 1.2rem;">
                                 {{ item.cluster }} Sector
@@ -106,13 +106,13 @@
                             <br /> -->
 
                             <!-- updated / submiteed -->
-                            <!-- <div ng-if="list.title.indexOf('Active') !== -1" style="font-weight:400; font-size:1.2rem;">
+                            <div ng-if="list.title.indexOf('Active') !== -1" style="font-weight:400; font-size:1.2rem;">
                                 {{'updated'|translate}}: {{ list.updatedAt( item.updatedAt ) }}
                             </div>
                             <div ng-if="list.title.indexOf('Complete') !== -1"
                                 style="font-weight:400; font-size:1.2rem;">
                                 {{'submitted'|translate}}: {{ list.updatedAt( item.updatedAt ) }}
-                            </div> -->
+                            </div>
 
                             <!-- description -->
                             <!-- <p align="justify" style="max-height:200px;color: #616161;">

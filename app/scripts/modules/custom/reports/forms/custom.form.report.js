@@ -76,8 +76,8 @@ angular.module('ngm.widget.custom.report', ['ngm.provider'])
             // project
             $scope.project = {
 								beneficiariesFormConfig: {
-									"keys": { "key": "beneficiaries.v1" },
-									"beneficiaries.v1": {
+									"keys": { "key": "beneficiariesv1" },
+									"beneficiariesv1": {
 										"config": {
 											"rows": [
 													{
@@ -297,12 +297,12 @@ angular.module('ngm.widget.custom.report', ['ngm.provider'])
 																	"classInput": "materialize-textarea"
 															}
 													]
-												},
-											],
-									},
-										// configById: { "cluster_id": { "input_type": "select", "class": "s12 m4 l4", "id": "cluster_id", "model": "cluster_id", "name": "cluster_name", "label": "Cluster/Unit *", "options": "b.cluster_id as b.cluster_name for b in project.beneficiaries_lists.clusters", "list": "clusters" }, "cluster_project_id": { "input_type": "select", "watch": "true", "class": "s12 m4 l4", "id": "cluster_project_id", "name": "cluster_project_name", "model": "cluster_project_id", "label": "Project", "options": "b.cluster_project_id as b.cluster_project_name for b in project.beneficiaries_lists.projects | filter: { cluster_id: beneficiary.cluster_id }:true", "list": "projects", "noselection": "true" }, "donor_id": { "input_type": "select", "class": "s12 m4 l4", "id": "donor_id", "name": "donor_name", "model": "donor_id", "label": "Donor", "options": "b.donor_id as b.donor_name for b in project.beneficiaries_lists.donor", "list": "donor", "noselection": "true" } },
+												}
+											]
 									}
-								},
+                                }
+                            },
+                            // configById: { "cluster_id": { "input_type": "select", "class": "s12 m4 l4", "id": "cluster_id", "model": "cluster_id", "name": "cluster_name", "label": "Cluster/Unit *", "options": "b.cluster_id as b.cluster_name for b in project.beneficiaries_lists.clusters", "list": "clusters" }, "cluster_project_id": { "input_type": "select", "watch": "true", "class": "s12 m4 l4", "id": "cluster_project_id", "name": "cluster_project_name", "model": "cluster_project_id", "label": "Project", "options": "b.cluster_project_id as b.cluster_project_name for b in project.beneficiaries_lists.projects | filter: { cluster_id: beneficiary.cluster_id }:true", "list": "projects", "noselection": "true" }, "donor_id": { "input_type": "select", "class": "s12 m4 l4", "id": "donor_id", "name": "donor_name", "model": "donor_id", "label": "Donor", "options": "b.donor_id as b.donor_name for b in project.beneficiaries_lists.donor", "list": "donor", "noselection": "true" } },
 
 								// beneficiariesFormConfigKeys: { key: 'beneficiaries.v1' },
 
@@ -354,6 +354,16 @@ angular.module('ngm.widget.custom.report', ['ngm.provider'])
 
                     // SET LIST for Beneficiries;
                     $scope.project.beneficiaries_lists = ngmCustomConfig.getCustomBeneficiariesConfigLists($scope.project.definition.report_type_id, $scope.project.definition.version);
+                    $scope.project.checkListBeneficiariesFromAPI()
+                    // variable to indentify template type
+                    $scope.templateBeneficiariesFormUrl = false;
+                    $scope.templateBeneficiariesFormAPIString = false;
+                    $scope.templateBeneficiariesFormAPIJSON = false;
+                    // to get template Beneficiaries form
+                    $scope.project.formBeneficiaries()
+
+
+
 
 
                     // page limits
@@ -564,8 +574,37 @@ angular.module('ngm.widget.custom.report', ['ngm.provider'])
 
                 formBeneficiaries:function(){
                     var template = ngmCustomConfig.getCustomBeneficiariesConfigTemplate($scope.project.definition.report_type_id, $scope.project.definition.version)
-                    link_file = 'template-form-beneficiaries/'+template;
-                    return link_file
+
+                    // link_file = 'template-form-beneficiaries/'+template;
+                    // if template is return string path file
+                    if(typeof template === 'string'){
+                        $scope.templateBeneficiariesFormUrl = true;
+                        link_file = template;
+                        return link_file;
+                    }else{
+                        // if template is return object that contain API
+                        ngmData.get(template).then(function (result) {
+                            if(!result.err){
+                                if (result.type === 'html') {
+                                    $scope.templateBeneficiariesFormAPIString = true;
+                                    $scope.project.beneficiariesFormConfig = result.config;
+                                }
+
+                                if (result.type === 'json') {
+                                    $scope.project.beneficiariesFormConfig = result.config
+                                    $scope.templateBeneficiariesFormAPIJSON = true;
+                                }
+
+                            }
+                            if (!result ||result === '') { 
+                                
+                                $scope.templateBeneficiariesFormAPInotDefined = true; 
+                                M.toast({ html: 'Error! The form is not defined', displayLength: 6000, classes: 'error' });
+                            }
+                            
+                        })
+                    }
+                   
                 },
                 
                 // countTotalBeneficiary:function(total_attr,array_attribut_to_count,beneficiary){
@@ -619,6 +658,41 @@ angular.module('ngm.widget.custom.report', ['ngm.provider'])
 
                     console.log(beneficiary[att])
 
+                },
+
+                checkListBeneficiariesFromAPI:function(){
+                    var beneficiaries_lists_api = ngmCustomConfig.getCustomBeneficiariesConfig($scope.project.definition.report_type_id, $scope.project.definition.version).lists_api
+                    // if (beneficiaries_lists_api.some_list_id) {
+                    //     $http({
+                    //         method: beneficiaries_lists_api.some_list_id.method,
+                    //         url: beneficiaries_lists_api.some_list_id.api,
+                    //         params: beneficiaries_lists_api.some_list_id.params
+                    //     }).success(function (x) {
+                    //         api_list = x[0].list
+                    //         $scope.project.beneficiaries_lists = angular.merge({}, $scope.project.beneficiaries_lists, ...api_list)
+                    //     })
+                    // }
+                    // second
+                    var array_list_api=[];
+                    if (beneficiaries_lists_api && Object.keys(beneficiaries_lists_api).length){
+                        name_list = Object.keys(beneficiaries_lists_api)
+                        for (i in beneficiaries_lists_api) {
+                           var req= $http({
+                                    method: beneficiaries_lists_api[i].method,
+                                    url: beneficiaries_lists_api[i].api,
+                                    params: beneficiaries_lists_api[i].params
+                            });
+                            array_list_api.push(req);
+                        }
+                        $q.all(array_list_api).then(function (result) { 
+                            result_api ={}
+                            for(i=0;i<name_list.length;i++){
+                                result_api[name_list[i]]=result[i].data.list;
+                            }
+                            $scope.project.beneficiaries_lists = angular.merge({}, $scope.project.beneficiaries_lists, result_api)
+                            
+                        })
+                    }
                 },
 
                 // remove beneficiary
