@@ -24,34 +24,18 @@
   	<a href="{{ panel.getProjectsHref() }}">
    	 <div class="card medium blue-grey darken-1 hoverable">
       <div class="card-image">
-        <img ng-if="panel.organization.admin0pcode === 'AF' ||
-        						panel.organization.admin0pcode === 'COL' ||
-                    panel.organization.admin0pcode === 'ET' ||
-                    panel.organization.admin0pcode === 'CB' ||
-                    panel.organization.admin0pcode === 'NG' ||
-                    panel.organization.admin0pcode === 'PG' ||
-                    panel.organization.admin0pcode === 'PHL' ||
-        						panel.organization.admin0pcode === 'SO' ||
-                    panel.organization.admin0pcode === 'SS'"
+        <img ng-if="ngmConditionalLogic.showUI('home_project_menu_img',panel.organization)"
         						src="images/cluster/projects-{{ panel.organization.admin0pcode }}.jpg">
-        <img ng-if="panel.organization.admin0pcode !== 'AF' &&
-                    panel.organization.admin0pcode !== 'COL' &&
-        						panel.organization.admin0pcode !== 'ET' &&
-                    panel.organization.admin0pcode !== 'CB' &&
-                    panel.organization.admin0pcode !== 'NG' &&
-                    panel.organization.admin0pcode !== 'PG' &&
-                    panel.organization.admin0pcode !== 'PHL' &&
-        						panel.organization.admin0pcode !== 'SO' &&
-                    panel.organization.admin0pcode !== 'SS'"
+        <img ng-if="!ngmConditionalLogic.showUI('home_project_menu_img',panel.organization)"
         						src="images/cluster/projects.jpg">
       </div>
       <div class="card-content white-text">
-        <p class="card-title" ng-if="panel.organization.admin0pcode !== 'AF'">{{ 'projects_mayus1' | translate }}</p>
-          <p class="card-title" ng-if="panel.organization.admin0pcode === 'AF'">{{'activity_plan' | translate}}</p>
+        <p class="card-title" ng-if="!ngmConditionalLogic.showUI('home_project_menu_btn',panel.organization)">{{ 'projects_mayus1' | translate }}</p>
+          <p class="card-title" ng-if="ngmConditionalLogic.showUI('home_project_menu_btn',panel.organization)">{{'activity_plan' | translate}}</p>
       </div>
       <div class="card-action">
-        <a ng-if="!$root.rtl && panel.organization.admin0pcode !== 'AF'" href="{{ panel.getProjectsHref() }}">{{ 'go_to' | translate}} {{ panel.organization.organization }} {{'projects_mayus1' | translate}}</a>
-        <a ng-if="!$root.rtl && panel.organization.admin0pcode === 'AF' " href="{{ panel.getProjectsHref() }}">{{ 'go_to' | translate}}
+        <a ng-if="!$root.rtl && (!ngmConditionalLogic.showUI('home_project_menu_btn',panel.organization))" href="{{ panel.getProjectsHref() }}">{{ 'go_to' | translate}} {{ panel.organization.organization }} {{'projects_mayus1' | translate}}</a>
+        <a ng-if="!$root.rtl && (ngmConditionalLogic.showUI('home_project_menu_btn',panel.organization)) " href="{{ panel.getProjectsHref() }}">{{ 'go_to' | translate}}
           {{ panel.organization.organization }} {{'activity_plan' | translate}}</a>
         <a ng-if="$root.rtl" href="{{ panel.getProjectsHref() }}"> بروبه
           برنامه های فعالیت{{ panel.organization.organization }}</a>
@@ -76,7 +60,7 @@
      </a>
   </div>-->
 
-  <div class="col s12 m12 l4" ng-if="panel.organization.admin0pcode !== 'COL' && panel.organization.admin0pcode !== 'PHL'">
+  <div class="col s12 m12 l4" ng-if="ngmConditionalLogic.showUI('home_stock_menu',panel.organization)">
 
   	<a href="{{ panel.getStocksHref() }}">
 	    <div class="card medium blue-grey darken-1 hoverable">

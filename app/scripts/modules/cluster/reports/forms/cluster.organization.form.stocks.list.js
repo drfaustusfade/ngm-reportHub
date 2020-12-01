@@ -33,6 +33,7 @@ angular.module( 'ngm.widget.organization.stocks.list', [ 'ngm.provider' ])
     'ngmClusterImportFile',
     'ngmLists',
     'config',
+    'ngmConditionalLogic',
 		function( $scope,
 				$rootScope,
         $location,
@@ -48,8 +49,9 @@ angular.module( 'ngm.widget.organization.stocks.list', [ 'ngm.provider' ])
         ngmClusterValidation,
         ngmClusterImportFile,
         ngmLists,
-        config ){
+        config,ngmConditionalLogic ){
       $scope.ngmClusterImportFile = ngmClusterImportFile;
+      $scope.ngmConditionalLogic = ngmConditionalLogic;
       $scope.messageFromfile=[];
       $scope.inputString =false;
       // project

@@ -271,7 +271,7 @@
 				<div class="widget card-panel white grey-text text-darken-2">
 
 					<!-- submission !== NG -->
-					<div align="center" ng-if="project.definition.admin0pcode !== 'NG'">
+					<div align="center" ng-if="!ngmConditionalLogic.showUI('monthly_report_submit',project.definition)">
 
 						<!-- validation -->
 							<!--
@@ -315,7 +315,7 @@
 					</div>
 
 					<!-- submission === NG -->
-					<div align="center" ng-if="project.definition.admin0pcode === 'NG'">
+					<div align="center" ng-if="ngmConditionalLogic.showUI('monthly_report_submit',project.definition)">
 
 						<!-- validation -->
 							<!--
@@ -367,7 +367,7 @@
 		</div>
 
 		<!-- validation report monthly -->
-		<div class="row remove" ng-if="project.report.admin0pcode === 'AF'  &&
+		<div class="row remove" ng-if="ngmConditionalLogic.showUI('monthly_report_validation',project.definition) &&
 																		project.report.report_status === 'complete' &&
 																		ngmClusterValidation.verified_user()">
 			<div class="col s12 m12 l12">

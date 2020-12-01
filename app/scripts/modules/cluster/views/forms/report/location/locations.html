@@ -171,16 +171,11 @@
 							 -->
 							<button class="btn waves-effect waves-light hide-on-small-only edit-report-btn"
 	      					title="Edit {{ project.monthlyTitleFormat }}"
-									ng-show="project.definition.project_status === 'active' &&
-														project.report.report_year >=  project.reportingYear() - 1  &&
-	      										project.report.report_status === 'complete' &&
-	      										project.canEdit"
+									ng-show="ngmConditionalLogic.showUI('monthly_report_edit_btn',project)"
 	      					ng-click="project.save( false, false, true )">
 	      					<i class="material-icons left">create</i>{{'edit_report' | translate}}
 	      			</button>
-							<button ng-hide="( project.report.admin0pcode === 'ET' && project.report.cluster_id === 'esnfi' ) ||
-																deactivedCopybutton ||
-																( !project.canEdit || project.definition.project_status === 'complete' || project.report.report_status === 'complete' )" 
+							<button ng-hide="ngmConditionalLogic.showUI('monthly_report_copy_previous_month_btn',{project:project,deactivedCopybutton:deactivedCopybutton})" 
 												class="btn waves-effect waves-light hide-on-small-only edit-report-btn"
 				      					title="Copy {{ project.previousMonth }}"	      					
 												ng-click="project.copyPreviousMonth()"
@@ -188,9 +183,7 @@
 	      					<i class="material-icons left">content_copy</i>{{'copy_last_month' | translate}}
 							</button>
 
-							<button ng-hide="( project.report.admin0pcode !== 'AF') ||
-																deactivedCopybutton ||
-																( !project.canEdit || project.definition.project_status === 'complete' || project.report.report_status === 'complete' )"
+							<button ng-hide="ngmConditionalLogic.showUI('monthly_report_import_btn',{project:project,deactivedCopybutton:deactivedCopybutton})"
 								class="btn waves-effect waves-light hide-on-small-only file-report-btn" title=" Import From File"
 								ng-click="project.uploadFileReport.openModal('upload-monthly-file')" ng-disabled="">
 								<i class="material-icons left">publish</i>Import Form File
@@ -268,10 +261,7 @@
 						</div>
 
 						<div class="row" style="padding-bottom:10px;"
-									ng-if="((project.definition.admin0pcode === 'ET' && 
-													project.definition.cluster_id === 'esnfi') || project.definition.admin0pcode === 'AF')  &&
-													project.definition.project_status !== 'complete' &&
-													project.report.report_status !== 'complete'">
+									ng-if="ngmConditionalLogic.showUI('monthly_report_add_new_location_btn',project)">
 							<button id="report_add_new_location"
 								class="btn"
 								style="background-color: #2196F3;"

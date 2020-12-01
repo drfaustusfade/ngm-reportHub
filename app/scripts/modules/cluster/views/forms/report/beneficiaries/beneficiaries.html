@@ -191,7 +191,7 @@
 			</div>
 
 
-			<div ng-if="beneficiary.cluster_id === 'wash' && project.definition.admin0pcode === 'AF'" class="row"
+			<div ng-if="ngmConditionalLogic.showUI('monthly_report_showrespons_notif',{cluster_id:beneficiary.cluster_id, admin0pcode:project.definition.admin0pcode })"class="row"
 				ng-style="($root.rtl) && { 'padding':'5px 21px 5px 0px' } || { 'padding':'5px 0px 5px 21px' }">
 				<p><i class="material-icons left" style="color: #e57373">info</i></p>
 				<p style="color: #e57373;font-weight:500">
@@ -208,8 +208,7 @@
 
 
 				<!-- DEFAULT -->
-				<div class="row" ng-if="!beneficiary.activity_description_id ||
-																	( beneficiary.activity_description_id && !ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'display_activity_detail' ] ) ">
+				<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_default',{activity_description_id:beneficiary.activity_description_id, display_activity_detail:ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'display_activity_detail' ]})">
 
 					<!-- activity_type_id -->
 					<div class="input-field col s12 m12 l6">
@@ -251,9 +250,9 @@
 						</select>
 
 						<!-- label -->
-						<label ng-if="project.definition.admin0pcode !== 'SO'"
+						<label ng-if="!ngmConditionalLogic.showUI('monthly_report_beneficiary_activity_description_label',project.definition)"
 										for="ngm-activity_description_id-{{ $locationIndex }}-{{ $beneficiaryIndex }}" class="active" style="transform:translateY(-10%)">{{ 'description' | translate }}</label>
-						<label ng-if="project.definition.admin0pcode === 'SO'"
+						<label ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_activity_description_label',project.definition)"
 										for="ngm-activity_description_id-{{ $locationIndex }}-{{ $beneficiaryIndex }}" class="active" style="transform:translateY(-10%)">{{ 'specific_indicator' | translate }}</label>
 					</div>
 				</div>
@@ -305,9 +304,9 @@
 						</select>
 
 						<!-- label -->
-						<label ng-if="project.definition.admin0pcode !== 'SO'"
+						<label ng-if="!ngmConditionalLogic.showUI('monthly_report_beneficiary_activity_description',project.definition)"
 										for="ngm-activity_description_id-{{ $locationIndex }}-{{ $beneficiaryIndex }}" class="active" style="transform:translateY(-10%)">{{ 'description' | translate }}</label>
-						<label ng-if="project.definition.admin0pcode === 'SO'"
+						<label ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_activity_description',project.definition)"
 										for="ngm-activity_description_id-{{ $locationIndex }}-{{ $beneficiaryIndex }}" class="active" style="transform:translateY(-10%)">{{ 'specific_indicator' | translate }}</label>
 					</div>
 
@@ -373,8 +372,7 @@
 
 					<!-- IMPLEMENTING PARTNERS -->
 					<div class="row"
-								ng-if="( project.definition.admin0pcode === 'AF' || project.definition.admin0pcode === 'ET' ) &&
-												( project.report.locations[ $locationIndex ].implementing_partners.length > 0 )">
+								ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_implementing_partner',{admin0pcode:project.definition.admin0pcode, implementing_partners:project.report.locations[ $locationIndex ].implementing_partners})">
 
 						<div class="input-field col s12">
 							<md-select style="margin-top: 15px;" ng-model="beneficiary.implementing_partners" multiple
@@ -390,8 +388,7 @@
 					<!-- BENEFICIARIES -->
 
 					<!-- activity_description_id && !category_type_id && !delivery_type_id -->
-					<div class="row" ng-if="!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'beneficiary_category_type_id' ] &&
-																	!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'beneficiary_delivery_type_id' ] && !project.definition.project_hrp_project">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_activity_description_nohrp',{ form:ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ],project:project.definition})">
 
 						<!-- beneficiary_type -->
 						<div class="input-field col s12">
@@ -414,11 +411,7 @@
 					</div>
 
 					<!-- activity_description_id && !category_type_id && !delivery_type_id && HRP project true-->
-					<div class="row"
-						ng-if="!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'beneficiary_category_type_id' ] &&
-								!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'beneficiary_delivery_type_id' ] &&
-								project.definition.project_hrp_project &&
-								!ngmClusterBeneficiaries.form[ $locationIndex ][ $index ][ 'hrp_beneficiary_type_id' ] && project.definition.admin0pcode ==='AF'">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_activity_description_delivery_nohrp',{ form:ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ],project:project.definition})">
 
 
 						<!-- beneficiary_type -->
@@ -459,11 +452,7 @@
 					</div>
 
 					<!-- activity_description_id && !category_type_id && !delivery_type_id && HRP project true && not AF-->
-					<div class="row"
-						ng-if="!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'beneficiary_category_type_id' ] &&
-								!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'beneficiary_delivery_type_id' ] &&
-								project.definition.project_hrp_project &&
-								(ngmClusterBeneficiaries.form[ $locationIndex ][ $index ][ 'hrp_beneficiary_type_id' ] || project.definition.admin0pcode !=='AF')">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_activity_description_hrp',{ form:ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ],project:project.definition})">
 
 						<!-- beneficiary_type -->
 						<div class="input-field col s12">
@@ -485,8 +474,7 @@
 					</div>
 
 					<!-- activity_description_id && !category_type_id && delivery_type_id -->
-					<div class="row" ng-if="!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'beneficiary_category_type_id' ] &&
-																	ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'beneficiary_delivery_type_id' ] && !project.definition.project_hrp_project">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_activity_description_delivery_hrp',{ form:ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ],project:project.definition})">
 
 						<!-- beneficiary_type -->
 						<div class="input-field col s12 m12 l6">
@@ -525,11 +513,7 @@
 					</div>
 
 					<!-- activity_description_id && !category_type_id && delivery_type_id && HRP project true-->
-					<div class="row"
-						ng-if="!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'beneficiary_category_type_id' ] &&
-								ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'beneficiary_delivery_type_id' ] &&
-								project.definition.project_hrp_project &&
-								!ngmClusterBeneficiaries.form[ $locationIndex ][ $index ][ 'hrp_beneficiary_type_id' ] && project.definition.admin0pcode ==='AF'">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_activity_description_hrp_not',{ form:ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ],project:project.definition})">
 
 
 						<!-- beneficiary_type -->
@@ -586,11 +570,7 @@
 					</div>
 
 					<!-- activity_description_id && !category_type_id && delivery_type_id && HRP project true not AF-->
-					<div class="row"
-						ng-if="!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'beneficiary_category_type_id' ] &&
-								ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'beneficiary_delivery_type_id' ] &&
-								project.definition.project_hrp_project &&
-								(ngmClusterBeneficiaries.form[ $locationIndex ][ $index ][ 'hrp_beneficiary_type_id' ] || project.definition.admin0pcode !=='AF')">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_activity_description_delivery_hrp_not',{ form:ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ],project:project.definition})">
 					<!-- beneficiary_type -->
 					<div class="input-field col s12 m12 l6">
 						<select materialize-select id="ngm-beneficiary_type_id-{{ $locationIndex }}-{{ $beneficiaryIndex }}"
@@ -627,8 +607,7 @@
 					</div>
 
 					<!-- activity_description_id && !category_type_id && !delivery_type_id -->
-					<div class="row" ng-if="ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'beneficiary_category_type_id' ] &&
-																	ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'beneficiary_delivery_type_id' ] && !project.definition.project_hrp_project">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_activity_description_category_delivery_nohrp',{ form:ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ],project:project.definition})">
 
 						<!-- beneficiary_type -->
 						<div class="input-field col s12 m12 l4">
@@ -682,11 +661,7 @@
 					</div>
 
 					<!-- activity_description_id && !category_type_id && !delivery_type_id && HRP project true-->
-					<div class="row"
-						ng-if="ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'beneficiary_category_type_id' ] &&
-							   ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'beneficiary_delivery_type_id' ]&&
-							   project.definition.project_hrp_project &&
-							   !ngmClusterBeneficiaries.form[ $locationIndex ][ $index ][ 'hrp_beneficiary_type_id' ] && project.definition.admin0pcode ==='AF'">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_activity_description_category_delivery_hrp',{ form:ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ],project:project.definition})">
 
 
 
@@ -762,11 +737,7 @@
 					</div>
 
 					<!-- activity_description_id && !category_type_id && !delivery_type_id && HRP project true not AF-->
-					<div class="row"
-						ng-if="ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'beneficiary_category_type_id' ] &&
-								ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'beneficiary_delivery_type_id' ]&&
-								project.definition.project_hrp_project &&
-								(ngmClusterBeneficiaries.form[ $locationIndex ][ $index ][ 'hrp_beneficiary_type_id' ] || project.definition.admin0pcode !=='AF')">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_activity_description_category_delivery_hrp_not',{ form:ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ],project:project.definition})">
 
 					<!-- beneficiary_type -->
 					<div class="input-field col s12 m12 l4">
@@ -819,7 +790,7 @@
 
 					</div>
 
-					<div ng-if="ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ]['response'] && ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ]['response'].length">
+					<div ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_response',ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ])">
 						<div class="row">
 							<div class="input-field col s12 m6 l6">
 								<label class="active">Activity Response</label>
@@ -851,9 +822,7 @@
 
 					<!-- MPC DELIVERY + MECHANISM -->
 					<!-- mpc_delivery_type_id, mpc_mechanism_type_id -->
-					<div class="row" ng-if="ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'mpc_delivery_type_id' ] &&
-																		ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'mpc_mechanism_type_id' ] &&
-																		!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'mpc_package_type_id' ]">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_mpc_delivery_mechanism',ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ])">
 
 						<!-- mpc_delivery_type_id -->
 						<div class="input-field col s12 m12 l6">
@@ -890,9 +859,7 @@
 
 					<!-- MPC PACKAGE -->
 					<!-- MPC mpc_delivery_type_id, mpc_mechanism_type_id, mpc_package_type_id -->
-					<div class="row" ng-if="ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'mpc_delivery_type_id' ] &&
-																		ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'mpc_mechanism_type_id' ] &&
-																		ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'mpc_package_type_id' ]">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_mpc_delivery_package',ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ])">
 
 						<!-- mpc_delivery_type_id -->
 						<div class="input-field col s12 m12 l4">
@@ -949,10 +916,7 @@
 
 					<!-- MPC inkind -->
 					<!-- MPC mpc_delivery_type_id -->
-					<div class="row" ng-if="ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'mpc_delivery_type_id' ]
-																	&& !ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'mpc_mechanism_type_id' ]
-																	&& !ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'mpc_package_type_id' ]
-																	&& !ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'mpc_transfer_type_id' ] ">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_mpc_delivery',ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ])">
 						<div class="input-field col s12 m12">
 							<select materialize-select watch id="ngm-mpc_delivery_type_id-{{ $locationIndex }}-{{$beneficiaryIndex}}"
 												name="mpc_delivery_type_id-{{ $locationIndex }}-{{$beneficiaryIndex}}" class="validate"
@@ -968,10 +932,7 @@
 
 					<!-- MPC inkind -->
 					<!-- MPC mpc_delivery_type_id, package_type_id -->
-					<div class="row" ng-if="ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'mpc_delivery_type_id' ]
-																	&& !ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'mpc_mechanism_type_id' ]
-																	&& ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'mpc_package_type_id' ]
-																	&& !ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'mpc_transfer_type_id' ] ">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_mpc_delivery_package_without_transfer',ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ])">
 						<div class="input-field col s12 m6">
 							<select materialize-select watch id="ngm-mpc_delivery_type_id-{{ $locationIndex }}-{{$beneficiaryIndex}}"
 												name="mpc_delivery_type_id-{{ $locationIndex }}-{{$beneficiaryIndex}}" class="validate"
@@ -1005,7 +966,7 @@
 						</div>
 					</div>
 
-					<div class="row" ng-if="ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'mpc_transfer_category_id' ] && ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'mpc_grant_type_id' ]">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_mpc_transfer_category_grant',ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ])">
 									<!-- transfer per household/individual -->
 									<div class="input-field col s12 m6 l6">
 										<select materialize-select id="ngm-transfer_category_id-{{ $locationIndex }}-{{$beneficiaryIndex}}"
@@ -1039,10 +1000,7 @@
 								</div>
 
 					<!-- UNITS -->
-					<div class="row"
-								ng-if="ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'unit_type_id' ] &&
-												ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'units' ] &&
-												!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'mpc_transfer_type_id' ]">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_unit_without_transfer',ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ])">
 						<!-- unit_type_id -->
 						<div class="input-field col s12 m12 l6">
 							<select materialize-select watch id="ngm-unit_type_id-{{ $locationIndex }}-{{ $beneficiaryIndex }}"
@@ -1078,10 +1036,7 @@
 
 
 					<!-- UNITS -->
-					<div class="row"
-								ng-if="ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'unit_type_id' ] &&
-												ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'units' ] &&
-												ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'mpc_transfer_type_id' ]">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_unit_transfer',ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ])">
 						<!-- unit_type_id -->
 						<div class="input-field col s12 m12 l4">
 							<select materialize-select watch id="ngm-unit_type_id-{{ $locationIndex }}-{{ $beneficiaryIndex }}"
@@ -1232,13 +1187,7 @@
 
 
 					<!-- SADD ( very SAD age breakdown - male ) -->
-					<div class="row"
-								ng-if="( ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'boys_0_5' ] &&
-													ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'boys_6_11' ] &&
-													ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'boys_12_17' ] &&
-													ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'men' ] &&
-													ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'elderly_men' ] &&
-													ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'total_male' ] )">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_sadd_age_breakdown_male',ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ])">
 
 						<!-- boys_0_5 -->
 						<div class="input-field col s12 m4 l2">
@@ -1328,13 +1277,7 @@
 					</div>
 
 					<!-- SADD ( very SAD age breakdown - female ) -->
-					<div class="row"
-								ng-if="( ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'girls_0_5' ] &&
-													ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'girls_6_11' ] &&
-													ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'girls_12_17' ] &&
-													ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'women' ] &&
-													ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'elderly_women' ] &&
-													ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'total_female' ] )">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_sadd_age_breakdown_female',ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ])">
 
 						<!-- girls_0_5 -->
 						<div class="input-field col s12 m4 l2">
@@ -1425,8 +1368,7 @@
 
 					<!--============================== NG CP ===============================-->
 					<!-- SADD excluding elderly_men and including men_18_24 ( slightly very SAD age breakdown - male ) -->
-					<div class="row"
-								ng-if="project.definition.admin0pcode === 'NG' && project.definition.cluster_id === 'child_protection'">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_slightly_sadd_age_breakdown',project.definition)">
 
 						<!-- boys_0_5 -->
 						<div class="input-field col s12 m3">
@@ -1489,8 +1431,7 @@
 					</div>
 
 					<!-- SADD excluding elderly_women and including women_18_24  ( slightly very SAD age breakdown - female ) -->
-					<div class="row"
-								ng-if="project.definition.admin0pcode === 'NG' && project.definition.cluster_id === 'child_protection'">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_slightly_sadd_age_breakdown',project.definition)">
 
 						<!-- girls_0_5 -->
 						<div class="input-field col s12 m3">
@@ -1557,8 +1498,7 @@
 
 					<!--============================== NG GBV ===============================-->
 					<!-- SADD excluding elderly_men and including men_18_24 ( slightly very SAD age breakdown - male ) -->
-					<div class="row"
-								ng-if="project.definition.admin0pcode === 'NG' && project.definition.cluster_id === 'gbv'">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_slightly_sadd_age_breakdown',project.definition)">
 
 						<!-- boys -->
 						<div class="input-field col s12 m3">
@@ -1625,8 +1565,7 @@
 					</div>
 
 					<!-- SADD excluding elderly_women and including women_18_24  ( slightly very SAD age breakdown - female ) -->
-					<div class="row"
-					ng-if="project.definition.admin0pcode === 'NG' && project.definition.cluster_id === 'gbv'">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficiary_slightly_sadd_age_breakdown',project.definition)">
 
 						<!-- girls_0_12 -->
 						<div class="input-field col s12 m3">
@@ -1695,19 +1634,7 @@
 
 
 					<!-- SADD (boys, girls, men, women) -->
-					<div class="row"
-								ng-if="( ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'boys' ] ||
-													ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'girls' ] ||
-													ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'men' ] ||
-													ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'women' ] ) &&
-												( !ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'boys_0_5' ]  &&
-													!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'boys_6_11' ] &&
-													!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'boys_12_17' ] &&
-													!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'girls_0_5' ]  &&
-													!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'girls_6_11' ] &&
-													!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'girls_12_17' ] ) &&
-												( !ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'elderly_men' ] &&
-													!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'elderly_women' ] )">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficary_sadd_boys_girl_men_women',ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ])">
 
 						<!-- boys -->
 						<div class="input-field col s12 m3">
@@ -1773,19 +1700,7 @@
 
 
 					<!-- SADD (boys, girls, men, women, elderly_men, elderly_women) -->
-					<div class="row"
-								ng-if="( ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'boys' ] &&
-													ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'girls' ] &&
-													ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'men' ] &&
-													ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'women' ] &&
-													ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'elderly_men' ] &&
-													ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'elderly_women' ] ) &&
-												( !ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'boys_0_5' ]  &&
-													!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'boys_6_11' ] &&
-													!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'boys_12_17' ] &&
-													!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'girls_0_5' ]  &&
-													!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'girls_6_11' ] &&
-													!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'girls_12_17' ] )">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficary_sadd_boys_girl_men_women_elderly',ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ])">
 
 						<!-- boys -->
 						<div class="input-field col s12 m4 l2">
@@ -1894,20 +1809,7 @@
 
 
 					<!-- SADD (boys, girls, men, women, elderly_men, elderly_women) -->
-					<div class="row" ng-if="( 
-																		ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'men' ] &&
-																		ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'women' ] &&
-																		ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'elderly_men' ] &&
-																		ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'elderly_women' ] ) &&
-																	( !ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'boys_0_5' ]  &&
-																		!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'boys_6_12' ] &&
-																		!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'boys_13_17' ] &&
-																		!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'girls_0_5' ]  &&
-																		!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'girls_6_12' ] &&
-																		!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'girls_13_17' ] &&
-																		!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'boys' ] &&
-																		!ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ][ 'girls' ])
-																		&& ( project.definition.admin0pcode !== 'NG' && project.definition.cluster_id !== 'gbv')">
+					<div class="row" ng-if="ngmConditionalLogic.showUI('monthly_report_beneficary_sadd_men_women_elderly', {form:ngmClusterBeneficiaries.form[ $locationIndex ][ $beneficiaryIndex ],project:project.definition})">
 						<!-- men -->
 						<div class="input-field col s12 m4 l3">
 							<input id="ngm-men-{{ $locationIndex }}-{{ $beneficiaryIndex }}"
@@ -2130,7 +2032,7 @@
 		<div class="row">
 
 			<!-- NG WASH -->
-			<div ng-if="project.definition.admin0pcode === 'NG' && project.definition.cluster_id === 'wash'">
+			<div ng-if="ngmConditionalLogic.showUI('monthly_report_beneficary_add_wash_activity_btn',project.definition)">
 				<button class="btn"
 								ng-if="( project.canEdit && project.definition.project_status !== 'complete' && project.report.report_status !== 'complete' )"
 								ng-click="project.addNgWashBeneficiary( $locationIndex );"
@@ -2140,7 +2042,7 @@
 			</div>
 
 			<!-- NG not WASH -->
-			<div ng-if="project.definition.admin0pcode === 'NG' && project.definition.cluster_id !== 'wash'">
+			<div ng-if="ngmConditionalLogic.showUI('monthly_report_beneficary_add_ng_activity_btn',project.definition)">
 				<button class="btn"
 								ng-if="( project.canEdit && project.definition.project_status !== 'complete' && project.report.report_status !== 'complete' )"
 								ng-click="project.addBeneficiary( $locationIndex );"
@@ -2150,7 +2052,7 @@
 			</div>
 
 			<!-- else -->
-			<div ng-if="project.definition.admin0pcode !== 'NG'">
+			<div ng-if="ngmConditionalLogic.showUI('monthly_report_beneficary_add_activity_btn',project.definition)">
 				<button class="btn"
 								ng-if="( project.canEdit && project.definition.project_status !== 'complete' && project.report.report_status !== 'complete' )"
 								ng-click="project.addBeneficiary( $locationIndex );"

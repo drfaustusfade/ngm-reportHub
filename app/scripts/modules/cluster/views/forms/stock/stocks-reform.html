@@ -58,7 +58,7 @@
             </div>
         
             <!-- stock purpose  -->
-            <div class="input-field col s12 m6 l4" ng-if="stock.admin0pcode !== 'ET'">
+            <div class="input-field col s12 m6 l4" ng-if="!ngmConditionalLogic.showUI('stock_report_field_stock_purpose',stock)">
                 <select materialize-select id="ngm-stock_item_purpose_id-{{$locationIndex}}-{{$stockIndex}}"
                     name="ngm-stock_item_purpose_id-{{$locationIndex}}-{{$stockIndex}}" class="validate"
                     ng-options="sp.stock_item_purpose_id as sp.stock_item_purpose_name for sp in report.lists.stock_item_purpose"
@@ -100,7 +100,7 @@
             </div>
         
             <!-- Type  -->
-            <div class="input-field col s12 m6 l4" ng-if="stock.admin0pcode === 'ET'">
+            <div class="input-field col s12 m6 l4" ng-if="ngmConditionalLogic.showUI('stock_report_field_stock_type',stock)">
                 <select materialize-select id="ngm-stock_type_id-{{$locationIndex}}-{{$stockIndex}}" name="ngm-stock_type_id-{{$locationIndex}}-{{$stockIndex}}"
                     class="validate" ng-options="s.stock_type_id as s.stock_type_name for s in report.lists.types"
                     ng-model="stock.stock_type_id"
@@ -126,7 +126,7 @@
             </div>
 
             <!-- Implementing Partner -->
-            <div ng-if="report.organization.admin0pcode === 'ET'" ng-init="!stock.implementing_partners ? stock.implementing_partners=[] : false" class="input-field col s12 m6 l4">
+            <div ng-if="ngmConditionalLogic.showUI('stock_report_field_implementing_partner',report.organization)" ng-init="!stock.implementing_partners ? stock.implementing_partners=[] : false" class="input-field col s12 m6 l4">
                 <select materialize-select watch id="ngm-implementing_partner-{{$locationIndex}}-{{$stockIndex}}"
                     name="ngm-implementing_partner-{{$locationIndex}}-{{$stockIndex}}" class="validate"
                     ng-options="item.organization_tag as item.organization for item in report.lists.organizations"
@@ -140,7 +140,7 @@
             </div>
             <!-- Donor -->
 
-            <div ng-if="report.organization.admin0pcode === 'ET'" ng-init="!stock.donors ? stock.donors=[] : false" class="input-field col s12 m6 l4">
+            <div ng-if="ngmConditionalLogic.showUI('stock_report_field_donor',report.organization)" ng-init="!stock.donors ? stock.donors=[] : false" class="input-field col s12 m6 l4">
                 <select materialize-select watch id="ngm-implementing_partner-{{$locationIndex}}-{{$stockIndex}}"
                     name="ngm-implementing_partner-{{$locationIndex}}-{{$stockIndex}}" class="validate"
                     ng-options="item.project_donor_id as item.project_donor_name for item in report.lists.donors"
@@ -191,9 +191,9 @@
                 <input id="ngm-stock_beneficiaries_covered-{{$locationIndex}}-{{$stockIndex}}"
                     name="ngm-stock_beneficiaries_covered-{{$locationIndex}}-{{$stockIndex}}" type="number" class="validate" min="0"
                     ng-model="stock.beneficiaries_covered" ng-change="" ng-disabled="report.report.report_status === 'complete'" required />
-                <label ng-if="stock.admin0pcode !== 'ET'" for="ngm-stock_beneficiaries_covered-{{$locationIndex}}-{{$stockIndex}}"
+                <label ng-if="!ngmConditionalLogic.showUI('stock_report_field_households',stock)" for="ngm-stock_beneficiaries_covered-{{$locationIndex}}-{{$stockIndex}}"
                     class="active">{{'beneficiary_coverage'|translate}}</label>
-                <label ng-if="stock.admin0pcode === 'ET'" for="ngm-stock_beneficiaries_covered-{{$locationIndex}}-{{$stockIndex}}"
+                <label ng-if="ngmConditionalLogic.showUI('stock_report_field_households',stock)" for="ngm-stock_beneficiaries_covered-{{$locationIndex}}-{{$stockIndex}}"
                     class="active">Households</label>
             </div>
         

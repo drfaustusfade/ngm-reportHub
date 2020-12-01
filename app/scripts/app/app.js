@@ -221,7 +221,7 @@ angular
 		});
 
 	}])
-	.controller('ngmReportHubCrtl', ['$scope', '$route', '$location', '$http', '$timeout', 'ngmAuth', 'ngmUser', '$window', '$translate', '$filter', '$rootScope', function ($scope, $route, $location, $http, $timeout, ngmAuth, ngmUser, $window, $translate, $filter, $rootScope) {
+	.controller('ngmReportHubCrtl', ['$scope', '$route', '$location', '$http', '$timeout', 'ngmAuth', 'ngmUser', '$window', '$translate', '$filter', '$rootScope', 'ngmConditionalLogic', function ($scope, $route, $location, $http, $timeout, ngmAuth, ngmUser, $window, $translate, $filter, $rootScope, ngmConditionalLogic) {
 
 		// ngm object
 		$scope.ngm = {
@@ -549,7 +549,7 @@ angular
 			}
 
 		};
-
+		$scope.ngmConditionalLogic = ngmConditionalLogic;
 		var var4plusrhafter;
 
 		// check host

@@ -31,7 +31,8 @@ angular.module('ngm.widget.form.authentication', ['ngm.provider'])
 		'config',
 		'$translate',
 		'$rootScope',
-		function ($scope, $http, $location, $timeout, $filter, $q, ngmAuth, ngmUser, ngmData, ngmClusterLists, ngmLists, config, $translate,$rootScope){
+		'ngmConditionalLogic',
+		function ($scope, $http, $location, $timeout, $filter, $q, ngmAuth, ngmUser, ngmData, ngmClusterLists, ngmLists, config, $translate, $rootScope, ngmConditionalLogic){
 
 
 			// 4wPlus
@@ -40,6 +41,8 @@ angular.module('ngm.widget.form.authentication', ['ngm.provider'])
 			}else{
 				var4wplusrh = "ReportHub"
 			}
+
+			$scope.ngmConditionalLogic = ngmConditionalLogic;
 
 			// project
 			$scope.panel = {
@@ -333,7 +336,7 @@ angular.module('ngm.widget.form.authentication', ['ngm.provider'])
 							// Materialize.toast( $filter('translate')('success')+' '+$filter('translate')('user_deleted'), 6000, 'success' );
 							M.toast({ html: $filter('translate')('success') + ' ' + $filter('translate')('user_deleted'), displayLength: 6000, classes: 'success' });
 							$timeout( function(){
-								var path = ( ngmUser.get().organization === 'iMMAP' && ( ngmUser.get().admin0pcode === 'CD' || ngmUser.get().admin0pcode === 'ET' ) ) ? '/immap/team' : '/team';
+								var path = (ngmConditionalLogic.checkCondition('ctrl_authentication_path_after_update_delete', ngmUser.get())) ? '/immap/team' : '/team';
 								if ($rootScope.teamPreviouseUrl) {
 									path = path = $rootScope.teamPreviouseUrl.split('#')[1];
 								}
@@ -423,7 +426,7 @@ angular.module('ngm.widget.form.authentication', ['ngm.provider'])
 
 									// redirect to team view and page refresh
 									if ( reload ) {
-										var path = ( ngmUser.get().organization === 'iMMAP' && ( ngmUser.get().admin0pcode === 'CD' || ngmUser.get().admin0pcode === 'ET' ) ) ? '/immap/team' : '/team';
+										var path = (ngmConditionalLogic.checkCondition('ctrl_authentication_path_after_update_delete', ngmUser.get()) ) ? '/immap/team' : '/team';
 										if ($rootScope.teamPreviouseUrl) {
 											  path = $rootScope.teamPreviouseUrl.split('#')[1];
 										}

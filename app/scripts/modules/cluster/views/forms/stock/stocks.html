@@ -3,18 +3,18 @@
   <table class="bordered responsive-table" style="margin-bottom:10px;" ng-show="report.report.stocklocations[$locationIndex].stocks.length">
     <tr style="font-weight: 400">
 			<td>Cluster</td>
-			<td ng-if="report.organization.admin0pcode !== 'ET'">{{'stock_purpose'|translate}}</td>
+			<td ng-if="!ngmConditionalLogic.showUI('stock_report_field_stock_purpose',report.organization)">{{'stock_purpose'|translate}}</td>
 			<td>{{'targeted_groups'|translate}}</td>
       <td>{{'stock_type' | translate}}</td>
-      <td ng-if="report.organization.admin0pcode === 'ET'">Type</td>
+      <td ng-if="ngmConditionalLogic.showUI('stock_report_field_stock_type',report.organization)">Type</td>
       <td>{{'status_mayus'|translate}}</td>
-      <td ng-if="report.organization.admin0pcode === 'ET'">Implementing Partner</td>
-      <td ng-if="report.organization.admin0pcode === 'ET'">Donor</td>
+      <td ng-if="ngmConditionalLogic.showUI('stock_report_field_implementing_partner',report.organization)">Implementing Partner</td>
+      <td ng-if="ngmConditionalLogic.showUI('stock_report_field_donor',report.organization)">Donor</td>
       <td>No. {{'in'|translate}} Stock</td>
       <td>No. {{'in'|translate}} {{'pipeline'|translate}}</td>
       <td>{{'units'|translate}}</td>
-      <td ng-if="report.organization.admin0pcode !== 'ET'">{{'beneficiary_coverage'|translate}}</td>
-      <td ng-if="report.organization.admin0pcode === 'ET'">Households</td>
+      <td ng-if="!ngmConditionalLogic.showUI('stock_report_field_households',report.organization)">{{'beneficiary_coverage'|translate}}</td>
+      <td ng-if="ngmConditionalLogic.showUI('stock_report_field_households',report.organization)">Households</td>
       <td ng-show="report.report.report_status !== 'complete'">{{'edit'|translate}}</td>
     </tr>
     <tr ng-repeat-start="stock in report.report.stocklocations[$locationIndex].stocks track by $index" ng-init="$stockIndex = $index">

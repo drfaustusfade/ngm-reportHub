@@ -107,19 +107,19 @@
 			<ul id="project_details_form" class="collection with-header">
 
 				<li class="collection-header blue lighten-1">
-					<h5 ng-if="project.definition.admin0pcode !== 'AF'" class="report-work-title white-text">
+					<h5 ng-if="!ngmConditionalLogic.showUI('project_detail_title',project.definition)" class="report-work-title white-text">
 						<i class="material-icons left">border_color</i>{{'project_plan'|translate}}
 
 					</h5>
-					<h5 ng-if="project.definition.admin0pcode === 'AF'" class="report-work-title white-text">
+					<h5 ng-if="ngmConditionalLogic.showUI('project_detail_title',project.definition)" class="report-work-title white-text">
 						<i class="material-icons left">border_color</i>{{'activity_plan_detail'|translate}}
 					
 					</h5>
-					<button ng-if="!project.newProject && project.definition.admin0pcode === 'AF'" class="right waves-effect waves-light btn copy-project-btn"
+					<button ng-if="!project.newProject && ngmConditionalLogic.showUI('project_detail_copy_btn',project.definition)" class="right waves-effect waves-light btn copy-project-btn"
 						ng-click="project.copyProject()">
 						<i class="material-icons mirror left">content_copy</i>Copy Project
 					</button>
-					<button ng-if="project.newProject && project.definition.admin0pcode === 'AF'" class="right waves-effect waves-light btn file-report-btn" ng-click="project.uploadFileReport.openModal('upload-monthly-file-project')">
+					<button ng-if="project.newProject && ngmConditionalLogic.showUI('project_detail_import_btn',project.definition)" class="right waves-effect waves-light btn file-report-btn" ng-click="project.uploadFileReport.openModal('upload-monthly-file-project')">
 						<i class="material-icons mirror left">publish</i>Import Project
 					</button>
 				</li>
@@ -292,7 +292,7 @@
 							</div>
 
 							<!-- HRP / JRP -->
-							<div class="row" ng-if="project.definition.admin0pcode !== 'COL'">
+							<div class="row" ng-if="!ngmConditionalLogic.showUI('project_detail_hrp_jrp',project.definition)">
 
 								<!-- switch -->
 								<div class="switch input-field col s12 m6 l6">
@@ -309,7 +309,7 @@
 								<!-- project_hrp_code -->
 
 								<!-- default -->
-								<div ng-if="project.definition.admin0pcode !== 'SO'">
+								<div ng-if="!ngmConditionalLogic.showUI('project_detail_hrp_code',project.definition)">
 									<div ng-if="project.definition.project_hrp_project" class="input-field col s12 m6 l6" ng-style="(windowWidth <= 600) && {'margin-top':'40px'}">
 									  <input id="ngm-project_hrp_code" type="text" class="validate"
 									  				ng-model="project.definition.project_hrp_code"
@@ -329,7 +329,7 @@
 								</div>
 
 								<!-- SO project_hrp_code -->
-								<div ng-if="project.definition.admin0pcode === 'SO'">
+								<div ng-if="ngmConditionalLogic.showUI('project_detail_hrp_code',project.definition)">
 									<div ng-if="project.definition.project_hrp_project" class="input-field col s12 m6 l6" ng-style="(windowWidth <= 600) && {'margin-top':'40px'}">
 									  <input id="ngm-project_hrp_code"
 									  				type="text" class="validate"
@@ -349,7 +349,7 @@
 							</div>
 
 							<!-- gender marker ? -->
-							<div class="row" ng-if="project.definition.admin0pcode === 'COL'">
+							<div class="row" ng-if="ngmConditionalLogic.showUI('project_detail_gender',project.definition)">
 								<div class="input-field col s12 m3">
 								  <input type="text" class="validate"
 								  				ng-model="project.definition.project_gender_marker"
@@ -360,14 +360,14 @@
 
 							<!--RESPONSE COMPONENTS COL-->
 							<div class="row"
-										ng-if="project.definition.admin0pcode ==='COL'"
+										ng-if="ngmConditionalLogic.showUI('project_detail_response_comment',project.definition)"
 										style="margin-bottom:50px;"
 										ng-include="project.responseComponentsCOL">
 							</div>
 
 
 							<!-- !CB && !health -->
-							<div ng-if="project.definition.admin0pcode !== 'CB' || ( project.definition.admin0pcode === 'CB' && project.definition.cluster_id !== 'health' )">
+							<div ng-if="ngmConditionalLogic.showUI('project_detail_activity_type',project.definition)">
 
 								<!-- activities -->
 								<div class="row" id="ngm-activity_type_label">
@@ -503,7 +503,7 @@
 
 
 							<!-- CB && health -->
-							<div ng-if="project.definition.admin0pcode === 'CB' && project.definition.cluster_id === 'health'">
+							<div ng-if="!ngmConditionalLogic.showUI('project_detail_activity_type',project.definition)">
 
 								<!-- activities -->
 								<div class="row" id="ngm-activity_type_label">
@@ -562,7 +562,7 @@
 
 
 							<!-- COL project donor  -->
-							<div class="row" ng-if="project.definition.admin0pcode === 'COL'" ng-include="project.projectDonorCOL" style="margin-top:20px">
+							<div class="row" ng-if="ngmConditionalLogic.showUI('project_detail_donor_col',project.definition)" ng-include="project.projectDonorCOL" style="margin-top:20px">
 							</div>
 
 

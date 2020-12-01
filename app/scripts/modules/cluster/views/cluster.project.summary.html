@@ -78,12 +78,12 @@
 	        <img src="images/cluster/details-1.jpg">
 	      </div>
 	      <div class="card-content white-text">
-			<p ng-if="panel.project.admin0pcode !== 'AF'" class="card-title">{{'project_plan'|translate}}</p>
-			<p ng-if="panel.project.admin0pcode === 'AF'" class="card-title">{{'planned_activities'|translate}}</p>
+			<p ng-if="!ngmConditionalLogic.showUI('project_summary_btn',panel.project)" class="card-title">{{'project_plan'|translate}}</p>
+			<p ng-if="ngmConditionalLogic.showUI('project_summary_btn',panel.project)" class="card-title">{{'planned_activities'|translate}}</p>
 	      </div>
 	      <div class="card-action">
-			<a ng-if="panel.project.admin0pcode !== 'AF'" class="left" href="#/cluster/projects/details/{{ panel.project.id }}">{{'go_to_project_plan'|translate}}</a>
-			<a ng-if="panel.project.admin0pcode === 'AF'" class="left"
+			<a ng-if="!ngmConditionalLogic.showUI('project_summary_btn',panel.project)" class="left" href="#/cluster/projects/details/{{ panel.project.id }}">{{'go_to_project_plan'|translate}}</a>
+			<a ng-if="ngmConditionalLogic.showUI('project_summary_btn',panel.project)" class="left"
 				href="#/cluster/projects/details/{{ panel.project.id }}">{{'go_to_activity_plan'|translate}}</a>
 	      </div>
 	    </div>
@@ -168,19 +168,19 @@
 				<div class="widget card-panel white grey-text text-darken-2">
 					<!-- submission -->
 					<div align="center">
-						<button ng-if="panel.project.admin0pcode !== 'AF'" data-target="complete-modal" class="waves-effect waves-light btn modal-trigger blue" ng-cloak>
+						<button ng-if="!ngmConditionalLogic.showUI('project_summary_btn',panel.project)" data-target="complete-modal" class="waves-effect waves-light btn modal-trigger blue" ng-cloak>
 							<i class="material-icons left">assignment_turned_in</i>{{'mark_project_as_complete' | translate}}
 						</button>
-						<button ng-if="panel.project.admin0pcode === 'AF'" data-target="complete-modal"
+						<button ng-if="ngmConditionalLogic.showUI('project_summary_btn',panel.project)" data-target="complete-modal"
 							class="waves-effect waves-light btn modal-trigger blue" ng-cloak>
 							<i class="material-icons left">assignment_turned_in</i>{{'mark_activity_plan_as_complete' | translate}}
 						</button>
 						<br/>
 						<br/>
-						<button ng-if="panel.project.admin0pcode !== 'AF'" data-target="delete-modal" class="waves-effect waves-light btn modal-trigger red lighten-2" ng-cloak>
+						<button ng-if="!ngmConditionalLogic.showUI('project_summary_btn',panel.project)" data-target="delete-modal" class="waves-effect waves-light btn modal-trigger red lighten-2" ng-cloak>
 							<i class="material-icons left">delete_forever</i>{{'delete_project' | translate}}
 						</button>
-						<button ng-if="panel.project.admin0pcode === 'AF'" data-target="delete-modal"
+						<button ng-if="ngmConditionalLogic.showUI('project_summary_btn',panel.project)" data-target="delete-modal"
 							class="waves-effect waves-light btn modal-trigger red lighten-2" ng-cloak>
 							<i class="material-icons left">delete_forever</i>{{'delete_activity_plan' | translate}}
 						</button>
@@ -194,10 +194,10 @@
 				<div class="widget card-panel white grey-text text-darken-2">
 					<!-- submission -->
 					<div align="center">
-						<button ng-if="panel.project.admin0pcode !== 'AF'"data-target="active-modal" class="waves-effect waves-light btn modal-trigger blue" ng-cloak>
+						<button ng-if="!ngmConditionalLogic.showUI('project_summary_btn',panel.project)"data-target="active-modal" class="waves-effect waves-light btn modal-trigger blue" ng-cloak>
 							<i class="material-icons left">assignment_turned_in</i>{{'mark_project_as_active' | translate}}
 						</button>
-						<button ng-if="panel.project.admin0pcode === 'AF'" data-target="active-modal"
+						<button ng-if="ngmConditionalLogic.showUI('project_summary_btn',panel.project)" data-target="active-modal"
 							class="waves-effect waves-light btn modal-trigger blue" ng-cloak>
 							<i class="material-icons left">assignment_turned_in</i>{{'mark_activity_plan_as_active' | translate}}
 						</button>

@@ -31,9 +31,10 @@ angular.module( 'ngm.widget.organization.stock', [ 'ngm.provider' ])
     'ngmClusterLists', 'ngmLists',
     'ngmClusterValidation',
     'ngmClusterImportFile',
-    'config','$translate',
-    function ($scope, $location, $timeout, $filter, $q, $http, $route, ngmUser, ngmAuth, ngmData, ngmClusterHelper, ngmClusterLists, ngmLists, ngmClusterValidation, ngmClusterImportFile,config,$translate ){
+    'config', '$translate','ngmConditionalLogic',
+    function ($scope, $location, $timeout, $filter, $q, $http, $route, ngmUser, ngmAuth, ngmData, ngmClusterHelper, ngmClusterLists, ngmLists, ngmClusterValidation, ngmClusterImportFile, config, $translate, ngmConditionalLogic ){
       $scope.ngmClusterImportFile = ngmClusterImportFile;
+      $scope.ngmConditionalLogic = ngmConditionalLogic;
       $scope.messageFromfile = [];
       $scope.inputString = false;
       $scope.detailStocks=[];
@@ -497,7 +498,7 @@ angular.module( 'ngm.widget.organization.stock', [ 'ngm.provider' ])
                 detailRowDisabled = true;
               }
             }
-            if (($data.implementing_partners && !$data.implementing_partners[0] || !$data.implementing_partners[0].organization_tag) || ($data.donors && !$data.donors[0] || !$data.donors[0].donor_id) || detailRowDisabled){
+            if (ngmConditionalLogic.getDefaults('form_stock_row_save_disabled', { implementing_partners: $data.implementing_partners, donors: $data.donors, detailRowDisabled: detailRowDisabled})){
               disabled =true;
             }
 

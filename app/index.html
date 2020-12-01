@@ -235,17 +235,12 @@
 									>
 									<i class="material-icons small right">move_to_inbox</i>PROJECTS ADMIN</a>
 							</li>
-							<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngm.getUser().admin0pcode === 'AF'"
-								ng-show="ngm.getUser().organization.toLowerCase() === 'immap' ||
-																																							ngm.getUser().organization.toLowerCase() === 'moph' ||
-																																							ngm.getUser().organization.toLowerCase() === 'who' ||
-																																							ngm.getUser().organization.toLowerCase() === 'dews'">
+							<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngmConditionalLogic.showUI('epr_menu',ngm.getUser())">
 								<a href="#/epr/admin" >
 									<i class="material-icons small right">assignment_turned_in</i>EPR ADMIN</a>
 							</li>
 							<li style="position: relative;border-bottom: 1px solid #f1f1f1"
-								ng-if="ngm.getUser().admin0pcode.toLowerCase() === 'af'"
-								ng-show="ngm.getUser().cluster_id.toLowerCase() === 'nutrition'|| ngm.getUser().organization.toLowerCase() === 'usaid'">
+								ng-if="ngmConditionalLogic.showUI('nutrition_weekly_menu',ngm.getUser())">
 								<a href="#/nutrition/afghanistan/"
 									>
 									<i class="material-icons small right">bubble_chart</i>{{'nutrition_weekly' | translate}}</a>
@@ -262,43 +257,33 @@
 									<i class="material-icons small right">bubble_chart</i>{{'activities_dashboard' | translate}}</a>
 							</li>
 
-							<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngm.getUser().admin0pcode !== 'COL'">
+							<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngmConditionalLogic.showUI('5w_dashboard_menu',ngm.getUser())">
 								<a href="#/cluster/5w" >
 									<i class="material-icons small right">bubble_chart</i>{{'5WDASHBOARD_mayus' |translate}}</a>
 							</li>
-							<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngm.getUser().admin0pcode === 'AF'"
-								ng-show="ngm.getUser().organization.toLowerCase() === 'immap' ||
-																																																ngm.getUser().organization.toLowerCase() === 'moph' ||
-																																																ngm.getUser().organization.toLowerCase() === 'who' ||
-																																																ngm.getUser().organization.toLowerCase() === 'dews'||
-																																																ngm.getUser().organization.toLowerCase() === 'usaid'">
+							<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngmConditionalLogic.showUI('epr_menu',ngm.getUser())">
 								<a href="#/epr" >
 									<i class="material-icons small right">bubble_chart</i>EPR DASHBOARD</a>
 							</li>
-							<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngm.getUser().admin0pcode === 'AF'"
-								ng-show="ngm.getUser().organization.toLowerCase() === 'immap' ||
-																																																ngm.getUser().organization.toLowerCase() === 'who' ||
-																																																ngm.getUser().organization.toLowerCase() === 'dews'">
+							<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngmConditionalLogic.showUI('dews_dashboard_menu',ngm.getUser())">
 								<a href="#/who/" >
 									<i class="material-icons small right">bubble_chart</i>DEWS DASHBOARD</a>
 							</li>
 							<!-- DROUGHT -->
 							<li style="position: relative;border-bottom: 1px solid #f1f1f1"
-								ng-if="ngm.getUser().admin0pcode.toLowerCase() === 'af'">
+								ng-if="ngmConditionalLogic.showUI('drought_menu',ngm.getUser())">
 								<a href="#/response/afghanistan/drought"
 									>
 									<i class="material-icons small right">bubble_chart</i>{{'drought' | translate}} DASHBOARD</a>
 							</li>
 
-							<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-show="ngm.getUserName() !== 'welcome' &&
-																																							ngm.getUser().admin0pcode.toLowerCase() === 'et' &&
-																																							ngm.getUser().organization.toLowerCase() === 'who'">
+							<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-show="ngmConditionalLogic.showUI('assessment_menu',{user:ngm.getUser(),welcome:ngm.getUserName()})">
 								<a href="#/who/ethiopia" >
 									<i class="material-icons small right">assignment_late</i>{{'assessments_mayus' | translate}}</a>
 							</li>
 							<!-- iMMAP HOME -->
 							<li style="position: relative;border-bottom: 1px solid #f1f1f1"
-								ng-show="ngm.getUserName() !== 'welcome' && ngm.getUser().organization === 'iMMAP'">
+								ng-show="ngmConditionalLogic.showUI('immap_menu',{user:ngm.getUser(),welcome:ngm.getUserName()})">
 								<a href="#/immap" >
 									<i class="material-icons small right">important_devices</i>{{'immap_home' | translate}}</a>
 							</li>
@@ -722,7 +707,7 @@
 								</div>
 
 								<!-- Record ADMIN  -->
-								<li ng-if="ngm.getUser().admin0pcode === 'AF'" align="center" class="teal z-depth-2"
+								<li ng-if="ngmConditionalLogic.showUI('record_admin_menu',ngm.getUser())" align="center" class="teal z-depth-2"
 									>
 									<a class="white-text right" ng-click="ngm.openBSAdmin= !ngm.openBSAdmin;">
 										<i class="material-icons smedium right">move_to_inbox</i>
@@ -758,15 +743,11 @@
 											<a href="#/cluster/admin/{{ ngm.getUser().adminRpcode | lowercase }}/{{ ngm.getUser().admin0pcode | lowercase }}" ng-click="ngm.toggleNavigationMenu();ngm.openDashboard= !ngm.openDashboard;">
 												<i class="material-icons small right">move_to_inbox</i>PROJECTS ADMIN</a>
 										</li>
-										<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngm.getUser().admin0pcode === 'AF'" ng-show="ngm.getUser().organization.toLowerCase() === 'immap' ||
-																																			ngm.getUser().organization.toLowerCase() === 'moph' ||
-																																			ngm.getUser().organization.toLowerCase() === 'who' ||
-																																			ngm.getUser().organization.toLowerCase() === 'dews'">
+										<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngmConditionalLogic.showUI('epr_menu',ngm.getUser())">
 											<a href="#/epr/admin" ng-click="ngm.toggleNavigationMenu();ngm.openDashboard= !ngm.openDashboard;">
 												<i class="material-icons small right">assignment_turned_in</i>EPR ADMIN</a>
 										</li>
-										<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngm.getUser().admin0pcode.toLowerCase() === 'af'"
-										 ng-show="ngm.getUser().cluster_id.toLowerCase() === 'nutrition'|| ngm.getUser().organization.toLowerCase() === 'usaid'">
+										<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngmConditionalLogic.showUI('nutrition_weekly_menu',ngm.getUser())">
 											<a href="#/nutrition/afghanistan/" ng-click="ngm.toggleNavigationMenu();ngm.openDashboard= !ngm.openDashboard;">
 												<i class="material-icons small right">bubble_chart</i>{{'nutrition_weekly' | translate}}</a>
 										</li>
@@ -780,39 +761,31 @@
 												<i class="material-icons small right">bubble_chart</i>{{'activities_dashboard' | translate}}</a>
 										</li>
 
-										<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngm.getUser().admin0pcode !== 'COL'">
+										<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngmConditionalLogic.showUI('5w_dashboard_menu',ngm.getUser())">
 											<a href="#/cluster/5w" ng-click="ngm.toggleNavigationMenu();ngm.openDashboard= !ngm.openDashboard;">
 												<i class="material-icons small right">bubble_chart</i>{{'5WDASHBOARD_mayus' |translate}}</a>
 										</li>
-										<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngm.getUser().admin0pcode === 'AF'" ng-show="ngm.getUser().organization.toLowerCase() === 'immap' ||
-																																												ngm.getUser().organization.toLowerCase() === 'moph' ||
-																																												ngm.getUser().organization.toLowerCase() === 'who' ||
-																																												ngm.getUser().organization.toLowerCase() === 'dews'||
-																																												ngm.getUser().organization.toLowerCase() === 'usaid'">
+										<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngmConditionalLogic.showUI('epr_menu',ngm.getUser())">
 											<a href="#/epr" ng-click="ngm.toggleNavigationMenu();ngm.openDashboard= !ngm.openDashboard;">
 												<i class="material-icons small right">bubble_chart</i>EPR DASHBOARD</a>
 										</li>
-										<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngm.getUser().admin0pcode === 'AF'" ng-show="ngm.getUser().organization.toLowerCase() === 'immap' ||
-																																												ngm.getUser().organization.toLowerCase() === 'who' ||
-																																												ngm.getUser().organization.toLowerCase() === 'dews'">
+										<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngmConditionalLogic.showUI('dews_dashboard_menu',ngm.getUser())">
 											<a href="#/who/" ng-click="ngm.toggleNavigationMenu();ngm.openDashboard= !ngm.openDashboard;">
 												<i class="material-icons small right">bubble_chart</i>DEWS DASHBOARD</a>
 										</li>
 										<!-- DROUGHT -->
-										<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngm.getUser().admin0pcode.toLowerCase() === 'af'">
+										<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-if="ngmConditionalLogic.showUI('drought_menu',ngm.getUser())">
 											<a href="#/response/afghanistan/drought" ng-click="ngm.toggleNavigationMenu();ngm.openDashboard= !ngm.openDashboard;">
 												<i class="material-icons small right">bubble_chart</i>{{'drought' | translate}} DASHBOARD</a>
 										</li>
 
-										<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-show="ngm.getUserName() !== 'welcome' &&
-																																			ngm.getUser().admin0pcode.toLowerCase() === 'et' &&
-																																			ngm.getUser().organization.toLowerCase() === 'who'">
+										<li style="position: relative;border-bottom: 1px solid #f1f1f1" ng-show="ngmConditionalLogic.showUI('assessment_menu',{user:ngm.getUser(),welcome:ngm.getUserName()})">
 											<a href="#/who/ethiopia" ng-click="ngm.toggleNavigationMenu();ngm.openDashboard= !ngm.openDashboard;">
 												<i class="material-icons small right">assignment_late</i>{{'assessments_mayus' | translate}}</a>
 										</li>
 										<!-- iMMAP HOME -->
 										<li style="position: relative;border-bottom: 1px solid #f1f1f1"
-											ng-show="ngm.getUserName() !== 'welcome' && ngm.getUser().organization === 'iMMAP'">
+											ng-show="ngmConditionalLogic.showUI('immap_menu',{user:ngm.getUser(),welcome:ngm.getUserName()})">
 											<a href="#/immap" ng-click="ngm.toggleNavigationMenu();ngm.openDashboard= !ngm.openDashboard;">
 											<i class="material-icons small right">important_devices</i>{{'immap_home' | translate}}</a>
 										</li>
@@ -998,6 +971,7 @@
 		<!-- services -->
 		<script src="scripts/app/services/ngmHelper.js"></script>
 		<script src="scripts/app/services/ngmAuthentication.js"></script>
+		<script src="scripts/app/services/ngmLogic.js"></script>
 		<!-- controllers -->
 		<script src="scripts/app/controllers/admin/controller.authentication.js"></script>
 		<script src="scripts/app/controllers/admin/controller.login.js"></script>

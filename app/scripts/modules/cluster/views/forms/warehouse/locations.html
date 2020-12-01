@@ -64,7 +64,7 @@
 					<h5 class="report-work-title white-text">
 						<i class="material-icons left">location_on</i>{{'warehouse_locations'|translate}}
 					</h5>
-					<button ng-if="config.organization.admin0pcode ==='AF'" class="right waves-effect waves-light btn file-report-btn"
+					<button ng-if="ngmConditionalLogic.showUI('stock_warehouse_location_import_btn',config.organization)" class="right waves-effect waves-light btn file-report-btn"
 						ng-click="report.uploadFileReport.openModal('upload-file-warehouse')">
 						<i class="material-icons mirror left">publish</i>Import Warehouse
 					</button>

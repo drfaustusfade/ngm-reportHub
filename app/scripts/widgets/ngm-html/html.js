@@ -47,8 +47,10 @@ angular.module('ngm.widget.html', ['ngm.provider'])
     'ngmAuth',
     'data', 
     'config',
-    function($scope, $sce, $element, $location, $timeout, ngmAuth, data, config){
+    'ngmConditionalLogic',
+    function ($scope, $sce, $element, $location, $timeout, ngmAuth, data, config, ngmConditionalLogic){
       // preload
+      $scope.ngmConditionalLogic = ngmConditionalLogic;
       $scope.preload = false;
       $scope.$on("preload", function (event,obj) { 
         if(obj.show){

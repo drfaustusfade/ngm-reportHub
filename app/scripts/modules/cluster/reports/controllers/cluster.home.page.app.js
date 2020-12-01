@@ -6,7 +6,7 @@
  * Controller of the ngmReportHub
  */
 angular.module( 'ngmReportHub' )
-	.controller( 'ClusterAppCtrl', ['$scope', '$location', '$route', 'ngmAuth', 'ngmData', 'ngmUser', 'ngmClusterHelper','$translate','$filter', function ( $scope, $location, $route, ngmAuth, ngmData, ngmUser, ngmClusterHelper,$translate,$filter ) {
+	.controller('ClusterAppCtrl', ['$scope', '$location', '$route', 'ngmAuth', 'ngmData', 'ngmUser', 'ngmClusterHelper', '$translate', '$filter', 'ngmConditionalLogic', function ($scope, $location, $route, ngmAuth, ngmData, ngmUser, ngmClusterHelper, $translate, $filter, ngmConditionalLogic ) {
 		this.awesomeThings = [
 			'HTML5 Boilerplate',
 			'AngularJS',
@@ -57,7 +57,10 @@ angular.module( 'ngmReportHub' )
 
 				// set template
 					// SY, CB
-				if ( $scope.report.organization.admin0pcode === 'CB' ||  $scope.report.organization.admin0pcode === 'PHL' || $scope.report.organization.admin0pcode === 'SY' ) {
+				// if ( $scope.report.organization.admin0pcode === 'CB' ||  $scope.report.organization.admin0pcode === 'PHL' || $scope.report.organization.admin0pcode === 'SY' ) {
+				// 	$scope.report.template += $scope.report.organization.admin0pcode + '.';
+				// }
+				if (ngmConditionalLogic.checkCondition('ctrl_homepage_set_template', $scope.report.organization)){
 					$scope.report.template += $scope.report.organization.admin0pcode + '.';
 				}
 

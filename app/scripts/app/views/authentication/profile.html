@@ -241,9 +241,7 @@ form {
 
 				</div>
 
-		    <div class="card z-depth-1" style="padding:5% 20% 5% !important;" 
-		    			ng-show="panel.user.organization === 'iMMAP' && 
-		    						( panel.user.admin0pcode === 'CD' || panel.user.admin0pcode === 'ET' )">
+		    <div class="card z-depth-1" style="padding:5% 20% 5% !important;" ng-show="ngmConditionalLogic.showUI('profile_program_field',panel.user)">
 
 		    	<!-- btn as title! -->
 		   	 	<a class="btn button-label" style="left:-1px;position:absolute;pointer-events:none;">{{'programme' | translate}}</a>
@@ -265,9 +263,7 @@ form {
 
 					<!-- input-date directive -->
 					<div class="row">
-						<div class="input-field col s12" 
-									ng-if="panel.user.organization === 'iMMAP' && 
-										( panel.user.admin0pcode === 'CD' || panel.user.admin0pcode === 'ET' ) ">
+						<div class="input-field col s12" ng-if="ngmConditionalLogic.showUI('profile_date_field',panel.user)">
 									<i class="material-icons prefix">date_range</i>
 									<input ngm-date
 									    type="text"
@@ -285,9 +281,7 @@ form {
 
 					<!-- input-date directive -->
 					<div class="row">
-						<div class="input-field col s12"
-									ng-if="panel.user.organization === 'iMMAP' && 
-										( panel.user.admin0pcode === 'CD' || panel.user.admin0pcode === 'ET' ) ">
+						<div class="input-field col s12" ng-if="ngmConditionalLogic.showUI('profile_date_field',panel.user)">
 						  		<i class="material-icons prefix">date_range</i>
 									<input ngm-date
 									    type="text"

@@ -42,6 +42,7 @@ angular.module( 'ngm.widget.project.details', [ 'ngm.provider' ])
 		'config',
 		'$translate',
 		'$rootScope',
+		'ngmConditionalLogic',
 
 		function(
 				$scope,
@@ -68,7 +69,8 @@ angular.module( 'ngm.widget.project.details', [ 'ngm.provider' ])
 				ngmClusterImportFile,
 				config,
 				$translate,
-				$rootScope ){
+				$rootScope,
+				ngmConditionalLogic ){
 			// set to $scope
 			$scope.ngmClusterHelper = ngmClusterHelper;
 			$scope.ngmClusterBeneficiaries = ngmClusterBeneficiaries;
@@ -77,6 +79,7 @@ angular.module( 'ngm.widget.project.details', [ 'ngm.provider' ])
 			$scope.ngmCbBeneficiaries = ngmCbBeneficiaries;
 			$scope.ngmClusterDocument = ngmClusterDocument;
 			$scope.ngmClusterImportFile = ngmClusterImportFile;
+			$scope.ngmConditionalLogic = ngmConditionalLogic;
 
 			// remove location from paginated array
 			$rootScope.$on('remove_location', function(evt, id){
@@ -772,11 +775,12 @@ angular.module( 'ngm.widget.project.details', [ 'ngm.provider' ])
 
 					var display = false;
 
-					if ( $scope.project.definition.admin0pcode === 'CB' &&
-								( $scope.project.definition.organization === 'WFP' ||
-									$scope.project.definition.organization === 'FAO' ||
-									$scope.project.definition.organization === 'IOM' ||
-									$scope.project.definition.organization === 'UNHCR' ) ) {
+					// if ( $scope.project.definition.admin0pcode === 'CB' &&
+					// 			( $scope.project.definition.organization === 'WFP' ||
+					// 				$scope.project.definition.organization === 'FAO' ||
+					// 				$scope.project.definition.organization === 'IOM' ||
+					// 				$scope.project.definition.organization === 'UNHCR' ) ) 
+					if (ngmConditionalLogic.checkCondition('ctrl_show_location_groupings_option', $scope.project.definition)){
 						display = true;
 					}
 

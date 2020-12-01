@@ -44,6 +44,7 @@ angular.module( 'ngm.widget.project.report', [ 'ngm.provider' ])
 		'ngmCbBeneficiaries',
 		'ngmClusterDocument',
 		'ngmClusterImportFile',
+		'ngmConditionalLogic',
 		// 'NgTableParams',
 		'config','$translate','$filter',
 
@@ -75,6 +76,7 @@ angular.module( 'ngm.widget.project.report', [ 'ngm.provider' ])
 			ngmCbBeneficiaries,
 			ngmClusterDocument,
 			ngmClusterImportFile,
+			ngmConditionalLogic,
 			// NgTableParams,
 			config,$translate,$filter ){
 
@@ -96,6 +98,7 @@ angular.module( 'ngm.widget.project.report', [ 'ngm.provider' ])
 			$scope.ngmCbBeneficiaries = ngmCbBeneficiaries;
 			$scope.ngmClusterDocument = ngmClusterDocument;
 			$scope.ngmClusterImportFile = ngmClusterImportFile;
+			$scope.ngmConditionalLogic = ngmConditionalLogic;
 			$scope.deactivedCopybutton = false;
 			$scope.messageFromfile = [];
 			$scope.inputString = false;
