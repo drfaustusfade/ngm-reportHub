@@ -505,7 +505,7 @@ angular.module('ngmReportHub')
 						// set user
 						ngmUser.set( result.data );
 					}
-				}).error(function( err ) {
+				}).catch(function( err ) {
 					// update
 					// Materialize.toast( 'Error!', 6000, 'error' );
 					M.toast({ html: 'Error!', displayLength: 6000, classes: 'error' });
