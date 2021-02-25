@@ -3018,6 +3018,13 @@ angular.module( 'ngm.widget.project.details', [ 'ngm.provider' ])
 				// },
 
 				// <++++++++++++++++++++++++++++++++++++++++++++++++++++++++> 
+				setSiteNameChecked:function(location){
+					if (location.admin0pcode === 'ET'){
+						if (!location.site_name_checked){
+							location.site_name_checked = location.site_name? true: false;
+						}
+					}
+				},
 
 
 

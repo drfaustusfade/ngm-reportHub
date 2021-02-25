@@ -97,7 +97,7 @@ angular.module( 'ngmReportHub' )
         inserted.createdAt = new Date().toISOString();
 
         if (project.admin0pcode === 'ET') {
-          // inserted.site_name_checked = false;
+          inserted.site_name_checked = false;
           inserted.site_name = '';
         }
         // set targets
@@ -841,6 +841,12 @@ angular.module( 'ngmReportHub' )
 
           ngmClusterLocations.site_implementationFilter = ngmClusterLocations.site_implementationFilter.filter((item, index) => ngmClusterLocations.site_implementationFilter.indexOf(item) === index);
           ngmClusterLocations.site_typeFilter = ngmClusterLocations.site_typeFilter.filter((item, index) => ngmClusterLocations.site_typeFilter.indexOf(item) === index);
+        }
+      },
+      // site_namechecked field show
+      siteNameCheckedReset:function(location){
+        if (!location.site_name_checked){
+          location.site_name ='';
         }
       }
 

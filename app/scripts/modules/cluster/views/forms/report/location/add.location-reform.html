@@ -511,6 +511,19 @@
                             <!-- site name -->
                             <div class="row" ng-if="ngmClusterLocations.adminSitesSelect[ 0 ].length > 0">
 
+                                <div ng-if="project.definition.admin0pcode === 'ET'" class="input-field col s12 m2">
+                                    <select materialize-select id="ngm-new_location_site_name_checked" 
+                                        name="ngm-new_location_site_name_checked"
+                                        class="validate" 
+                                        ng-model="ngmClusterLocations.new_location.site_name_checked" 
+                                        ng-options="(item?'Yes':'No') for item in [true, false]"
+                                        ng-change="ngmClusterLocations.siteNameCheckedReset(ngmClusterLocations.new_location)" 
+                                        ng-disabled="project.definition.project_status === 'complete'">
+                                        <option value="">{{ 'select' | translate }}</option>
+                                    </select>
+                                    <label for="ngm-new_location_site_name_checked" class="active" style="transform:translateY(55%)">Site?</label>
+                                </div>
+
                                 <!-- select site list -->
                                 <div class="input-field col s12 m2">
                                     <select materialize-select id="ngm-new_location-site_list_select_id"
@@ -518,15 +531,15 @@
                                         ng-model="ngmClusterLocations.new_location.site_list_select_id"
                                         ng-options="item.site_list_select_id as item.site_list_select_name for item in project.lists.site_list_select"
                                         ng-change="ngmClusterLocations.updateYesorNo(project.lists,ngmClusterLocations.new_location)"
-                                        ng-disabled="project.definition.project_status === 'complete'">
+                                        ng-disabled="project.definition.project_status === 'complete' || ((project.definition.admin0pcode === 'ET') && !ngmClusterLocations.new_location.site_name_checked)">
                                         <option value="">{{ 'select' | translate }}</option>
                                     </select>
                                     <label for="ngm-new_location-site_list_select_id" class="active"
-                                        style="transform:translateY(-10%)">{{'from_list'|translate}}?</label>
+                                        style="transform:translateY(55%)">{{'from_list'|translate}}?</label>
                                 </div>
 
                                 <!-- site name -->
-                                <div class="input-field col s12 m10" ng-if="ngmClusterLocations.new_location.site_list_select_id === 'yes'">
+                                <div class="input-field col s12" ng-class="{'m10': project.definition.admin0pcode !== 'ET' , 'm8': project.definition.admin0pcode === 'ET'}" ng-if="ngmClusterLocations.new_location.site_list_select_id === 'yes'">
                                     <select materialize-select watch id="ngm-new_location-site_name"
                                         name="ngm-new_location-site_name" class="validate" ng-model="ngmClusterLocations.new_location.site_id"
                                         ng-options="item.site_id as item.site_name 
@@ -534,18 +547,20 @@
                                                 filter:{ site_type_id: ngmClusterLocations.new_location.site_type_id }"
                                         ng-change="ngmClusterLocations.updateAdminSite( ngmClusterLocations.new_location, 0 );
                                                         ngmClusterLocations.updateLocation(project, 0, project.lists.admin5, 'admin5pcode', ngmClusterLocations.new_location);
-                                                        ngmClusterBeneficiaries.inputChange( 'ngm-new_location-site_name' )">
+                                                        ngmClusterBeneficiaries.inputChange( 'ngm-new_location-site_name' )"
+                                        ng-disabled="(project.definition.admin0pcode === 'ET') && !ngmClusterLocations.new_location.site_name_checked">
 
                                         <option value="" disabled>{{ 'select' | translate }}</option>
                                     </select>
                                     <label for="ngm-new_location-site_name" class="active"
-                                        style="transform:translateY(-10%)">{{'site_name'|translate}}*</label>
+                                        style="">{{'site_name'|translate}}*</label>
                                 </div>
 
-                                <div class="input-field col s12 m10" ng-if="ngmClusterLocations.new_location.site_list_select_id === 'no'">
+                                <div class="input-field col s12" ng-class="{'m10': project.definition.admin0pcode !== 'ET' , 'm8': project.definition.admin0pcode === 'ET'}" ng-if="ngmClusterLocations.new_location.site_list_select_id === 'no'">
                                     <input id="ngm-new_location-site_name" type="text" placeholder="Site Name"
                                         ng-model="ngmClusterLocations.new_location.site_name" class="validate"
                                         ng-change="ngmClusterBeneficiaries.inputChange( 'ngm-new_location-site_name' )"
+                                        ng-disabled="(project.definition.admin0pcode === 'ET') && !ngmClusterLocations.new_location.site_name_checked"
                                         required>
                                     <label for="ngm-new_location-site_name" class="active"
                                         style="">{{'site_name'|translate}}*</label>
@@ -555,6 +570,7 @@
                                     <input id="ngm-new_location-site_name" type="text" placeholder="Site Name"
                                         ng-model="ngmClusterLocations.new_location.site_name" class="validate"
                                         ng-change="ngmClusterBeneficiaries.inputChange( 'ngm-new_location-site_name' )"
+                                        ng-disabled="(project.definition.admin0pcode === 'ET') && !ngmClusterLocations.new_location.site_name_checked"
                                         required>
                                     <label for="ngm-new_location-site_name" class="active"
                                         style="">{{'site_name'|translate}}*</label>
@@ -563,10 +579,23 @@
 
                             <!-- site name -->
                             <div class="row" ng-if="ngmClusterLocations.adminSitesSelect[ 0 ].length < 1">
-                                <div class="input-field col s12 m12">
+                                 <div ng-if="project.definition.admin0pcode === 'ET'" class="input-field col s12 m2">
+                                    <select materialize-select id="ngm-new_location_site_name_checked" 
+                                        name="ngm-new_location_site_name_checked"
+                                        class="validate" 
+                                        ng-model="ngmClusterLocations.new_location.site_name_checked" 
+                                        ng-options="(item?'Yes':'No') for item in [true, false]"
+                                        ng-change="ngmClusterLocations.siteNameCheckedReset(ngmClusterLocations.new_location)" 
+                                        ng-disabled="project.definition.project_status === 'complete'">
+                                        <option value="">{{ 'select' | translate }}</option>
+                                    </select>
+                                    <label for="ngm-new_location_site_name_checked" class="active" style="transform:translateY(55%)">Site?</label>
+                                </div>
+                                <div class="input-field col s12" ng-class="{'m12': project.definition.admin0pcode !== 'ET' , 'm10': project.definition.admin0pcode === 'ET'}">
                                     <input id="ngm-new_location-site_name" type="text" placeholder="Site Name"
                                         ng-model="ngmClusterLocations.new_location.site_name" class="validate"
                                         ng-change="ngmClusterBeneficiaries.inputChange( 'ngm-new_location-site_name' )"
+                                        ng-disabled="(project.definition.admin0pcode === 'ET') && !ngmClusterLocations.new_location.site_name_checked"
                                         required>
                                     <label for="ngm-new_location-site_name" class="active"
                                         style="">{{'site_name'|translate}}*</label>
