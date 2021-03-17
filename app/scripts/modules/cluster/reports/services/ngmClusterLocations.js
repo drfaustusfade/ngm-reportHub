@@ -120,7 +120,7 @@ angular.module( 'ngmReportHub' )
         inserted.createdAt = new Date().toISOString();
 
         if (project.admin0pcode === 'ET') {
-          // //hide feature
+          // //hide feature , if new location admin0pcode is ET / ethiopia set attribute site_name_checked to true for now its hide
           // inserted.site_name_checked = true;
           inserted.site_name = '';
         }
@@ -834,22 +834,26 @@ angular.module( 'ngmReportHub' )
         //   ngmClusterLocations.filterLocations(project, $index, location);
         // });
 
-        var locationAdmin1pcodeTag = ''
+        var locationAdmin1pcodeTag = [];
         angular.forEach(locations, function (location, $index) {
-          $http({
-            method: 'GET',
-            url: ngmAuth.LOCATION + '/api/list/getAdminSites?admin0pcode='
-              + project.definition.admin0pcode
-              + '&admin1pcode=' + location.admin1pcode
-          }).then(function (result) {
-            if (locationAdmin1pcodeTag !== location.admin1pcode) {
-              project.lists.adminSites = project.lists.adminSites.concat(result.data);
-              locationAdmin1pcodeTag = location.admin1pcode
-            }
-            ngmClusterLocations.filterLocations(project, $index, location);
-
-          });
+          
+            $http({
+              method: 'GET',
+              url: ngmAuth.LOCATION + '/api/list/getAdminSites?admin0pcode='
+                + project.definition.admin0pcode
+                + '&admin1pcode=' + location.admin1pcode
+            }).then(function (result) {
+              if (locationAdmin1pcodeTag.indexOf(location.admin1pcode) < 0) {
+                project.lists.adminSites = project.lists.adminSites.concat(result.data);
+                ngmClusterLocations.filterLocations(project, $index, location);
+                locationAdmin1pcodeTag.push(location.admin1pcode)
+              }
+              ngmClusterLocations.filterLocations(project, $index, location);
+            });
+          
+          
         });
+        
 
       },
       // to set list of site_type && site_implementation
@@ -890,6 +894,7 @@ angular.module( 'ngmReportHub' )
         }
       },
       // site_namechecked field show
+      // function to reset attribute site_name,site_list_select_id,site_list_select_name, site_list_select_disabled, when site_name_checked attrbute set to false/unchecked
       siteNameCheckedReset:function(location){
         if (!location.site_name_checked){
           location.site_name ='';

@@ -3018,6 +3018,7 @@ angular.module( 'ngm.widget.project.details', [ 'ngm.provider' ])
 				// },
 
 				// <++++++++++++++++++++++++++++++++++++++++++++++++++++++++> 
+				// set location site_name_checked if not set before
 				setSiteNameChecked:function(location){
 					if (location.admin0pcode === 'ET'){
 						if (!location.site_name_checked){
