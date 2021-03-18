@@ -295,7 +295,10 @@ angular.module( 'ngm.widget.project.details', [ 'ngm.provider' ])
 					// Set limited amount of locations
 					$scope.paginated_target_locations = $scope.project.definition.target_locations.slice($scope.start, $scope.end);
 					// set admin1,2,3,4,5 && site_type && site_implementation
-					ngmClusterLocations.setLocationAdminSelect($scope.project, $scope.project.definition.target_locations);
+					ngmClusterLocations.fetchInitialAdminSites($scope.project, $scope.project.definition.target_locations);
+					// set admin1,2,3,4,5 && site_type && site_implementation,
+					// comment this  function, because move to fetchInitalAdminSites
+					// ngmClusterLocations.setLocationAdminSelect($scope.project, $scope.project.definition.target_locations);
 					// documents uploads
 					$scope.project.setTokenUpload();
 					// implementing partners
