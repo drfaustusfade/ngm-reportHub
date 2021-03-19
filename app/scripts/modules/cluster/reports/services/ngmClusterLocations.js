@@ -909,31 +909,35 @@ angular.module( 'ngmReportHub' )
        var req_adminsites =[]
        if(locations.length){
          angular.forEach(locations, function (location, $index) {
-           var selected_sites = $filter('filter')(project.lists.adminSites, { admin1pcode: location.admin1pcode }, true);
-          // check if adminsites for admin1pcode is on the list, if not on the list make request
-           if (!selected_sites.length && admin1.indexOf(location.admin1pcode) < 0) {
-               admin1.push(location.admin1pcode)
-               var request = $http({
-                 method: 'GET',
-                 url: ngmAuth.LOCATION + '/api/list/getAdminSites?admin0pcode='
-                   + project.definition.admin0pcode
-                   + '&admin1pcode=' + location.admin1pcode
-               })
-               req_adminsites.push(request);
-             }
+           if (((location.site_list_select_id === 'yes')) || location.site_type){
+             var selected_sites = $filter('filter')(project.lists.adminSites, { admin1pcode: location.admin1pcode }, true);
+            // check if adminsites for admin1pcode is on the list, if not on the list make request
+             if (!selected_sites.length && admin1.indexOf(location.admin1pcode) < 0) {
+                 admin1.push(location.admin1pcode)
+                 var request = $http({
+                   method: 'GET',
+                   url: ngmAuth.LOCATION + '/api/list/getAdminSites?admin0pcode='
+                     + project.definition.admin0pcode
+                     + '&admin1pcode=' + location.admin1pcode
+                 })
+                 req_adminsites.push(request);
+               }
+           }
  
            });
+           
           //  make request
-         $q.all(req_adminsites).then(function (results) {
-           for(var i=0;i<results.length ;i++){
-             project.lists.adminSites = project.lists.adminSites.concat(results[i].data)
-           }
-           // set admin1, 2, 3, 4, 5 && site_type && site_implementation
-           ngmClusterLocations.setLocationAdminSelect(project, locations)
-         })
-       }else{
-         // set admin1, 2, 3, 4, 5 && site_type && site_implementation
-         ngmClusterLocations.setLocationAdminSelect(project, locations)
+         if(req_adminsites.length){   
+           $q.all(req_adminsites).then(function (results) {
+             
+             for(var i=0;i<results.length ;i++){
+               project.lists.adminSites = project.lists.adminSites.concat(results[i].data)
+             }
+             // set admin1, 2, 3, 4, 5 && site_type && site_implementation
+             ngmClusterLocations.setLocationAdminSelect(project, locations)
+             
+           })
+         }
        }
 
       }
