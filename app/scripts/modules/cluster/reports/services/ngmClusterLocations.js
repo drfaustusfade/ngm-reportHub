@@ -771,6 +771,10 @@ angular.module( 'ngmReportHub' )
             return i.admin5pcode === location.admin5pcode;
           });
         }
+        if(ngmClusterLocations.adminSitesSelect[$index].length){
+          // to ensure the site_id is string
+          ngmClusterLocations.adminSitesSelect[$index].map((x) => {if (typeof x.site_id === 'number' ){ x.site_id = x.site_id.toString();} return x})
+        }
       },
       // reset location property
       resetLocations: function (project, type, location) {
