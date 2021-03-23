@@ -534,7 +534,7 @@ angular.module( 'ngmReportHub' )
         }, 10)
       },
       // to update site type
-      updateSiteType: function (lists, location) {
+      updateSiteType: function (project,lists, location,$index) {
         $timeout(function () {
           // attr
           var selected = [];
@@ -551,6 +551,20 @@ angular.module( 'ngmReportHub' )
             if (selected && selected.length) {
               location.site_type_id = selected[0].site_type_id;
               location.site_type_name = selected[0].site_type_name;
+            }
+            // to filter adminssites if site_type_id change;
+            ngmClusterLocations.filterLocations (project, $index, location);
+            // remove and set it likte location do not have adminsite list if adminSitesSelect empty when site_type_id not on the lists
+            // and change from "yes" to "no"  on site_list_select_id attributie;
+            if (!ngmClusterLocations.adminSitesSelect[$index].length && location.site_list_select_id === 'yes'){
+              location.site_list_select_id = 'no';
+              location.site_list_select_yes = 'No';
+              location.site_list_select_disabled = true;
+              // site
+              delete location.site_id;
+              delete location.site_name;
+              delete location.site_lng;
+              delete location.site_lat;
             }
           }
         }, 10)
@@ -773,7 +787,12 @@ angular.module( 'ngmReportHub' )
         }
         if(ngmClusterLocations.adminSitesSelect[$index].length){
           // to ensure the site_id is string
-          ngmClusterLocations.adminSitesSelect[$index].map((x) => {if (typeof x.site_id === 'number' ){ x.site_id = x.site_id.toString();} return x})
+          ngmClusterLocations.adminSitesSelect[$index].map((x) => {if (typeof x.site_id === 'number' ){ x.site_id = x.site_id.toString();} return x});
+          if (location.site_type_id)
+          // filter based on site_type_id
+          ngmClusterLocations.adminSitesSelect[$index] = ngmClusterLocations.adminSitesSelect[$index].filter(function (i) {
+            return i.site_type_id === location.site_type_id;
+          });
         }
       },
       // reset location property
@@ -913,7 +932,7 @@ angular.module( 'ngmReportHub' )
        var req_adminsites =[]
        if(locations.length){
          angular.forEach(locations, function (location, $index) {
-           if (((location.site_list_select_id === 'yes')) || location.site_type){
+           if (((location.site_list_select_id)) || location.site_type){
              var selected_sites = $filter('filter')(project.lists.adminSites, { admin1pcode: location.admin1pcode }, true);
             // check if adminsites for admin1pcode is on the list, if not on the list make request
              if (!selected_sites.length && admin1.indexOf(location.admin1pcode) < 0) {

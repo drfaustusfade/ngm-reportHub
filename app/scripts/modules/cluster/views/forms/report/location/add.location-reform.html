@@ -135,7 +135,7 @@
                                         name="ngm-new_location-site_type_id" class="validate"
                                         ng-model="ngmClusterLocations.new_location.site_type_id"
                                         ng-options="item.site_type_id as item.site_type_name for item in ngmClusterLocations.site_typeFilter"
-                                        ng-change="ngmClusterLocations.updateSiteType(project.lists,ngmClusterLocations.new_location)"
+                                        ng-change="ngmClusterLocations.updateSiteType(project,project.lists,ngmClusterLocations.new_location,0)"
                                         ng-disabled="project.definition.project_status === 'complete'">
                                         <option value="">-</option>
                                     </select>
@@ -171,7 +171,7 @@
                                         name="ngm-new_location-site_type_id" class="validate"
                                         ng-model="ngmClusterLocations.new_location.site_type_id"
                                         ng-options="item.site_type_id as item.site_type_name for item in ngmClusterLocations.site_typeFilter"
-                                        ng-change="ngmClusterLocations.updateSiteType(project.lists,ngmClusterLocations.new_location)"
+                                        ng-change="ngmClusterLocations.updateSiteType(project,project.lists,ngmClusterLocations.new_location,0)"
                                         ng-disabled="project.definition.project_status === 'complete'">
                                         <option value="">-</option>
                                     </select>
@@ -224,7 +224,7 @@
                                         name="ngm-new_location-site_type_id" class="validate"
                                         ng-model="ngmClusterLocations.new_location.site_type_id"
                                         ng-options="item.site_type_id as item.site_type_name for item in ngmClusterLocations.site_typeFilter"
-                                        ng-change="ngmClusterLocations.updateSiteType(project.lists,ngmClusterLocations.new_location)"
+                                        ng-change="ngmClusterLocations.updateSiteType(project,project.lists,ngmClusterLocations.new_location,0)"
                                         ng-disabled="project.definition.project_status === 'complete'">
                                         <option value="">-</option>
                                     </select>

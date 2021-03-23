@@ -288,7 +288,7 @@
 																				ng-model="location.site_type_id"
 																				unknown-value="{{ ::location.site_type_name }}"
                                         ng-options="item.site_type_id as item.site_type_name for item in ngmClusterLocations.site_typeFilter"
-                                        ng-change="ngmClusterLocations.updateSiteType(project.lists,location)"
+                                        ng-change="ngmClusterLocations.updateSiteType(project,project.lists,location,$index)"
                                         ng-disabled="project.definition.project_status === 'complete'">
                                         <option value="">-</option>
                                     </select>
@@ -326,7 +326,7 @@
 																				ng-model="location.site_type_id"
 																				unknown-value="{{ ::location.site_type_name }}"
                                         ng-options="item.site_type_id as item.site_type_name for item in ngmClusterLocations.site_typeFilter"
-                                        ng-change="ngmClusterLocations.updateSiteType(project.lists,location)"
+                                        ng-change="ngmClusterLocations.updateSiteType(project,project.lists,location,$index)"
                                         ng-disabled="project.definition.project_status === 'complete'">
                                         <option value="">-</option>
                                     </select>
@@ -382,7 +382,7 @@
 																				ng-model="location.site_type_id"
 																				unknown-value="{{ ::location.site_type_name }}"
                                         ng-options="item.site_type_id as item.site_type_name for item in ngmClusterLocations.site_typeFilter"
-                                        ng-change="ngmClusterLocations.updateSiteType(project.lists,location)"
+                                        ng-change="ngmClusterLocations.updateSiteType(project,project.lists,location,$index)"
                                         ng-disabled="project.definition.project_status === 'complete'">
                                         <option value="">-</option>
                                     </select>
