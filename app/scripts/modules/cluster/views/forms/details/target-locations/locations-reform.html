@@ -727,7 +727,7 @@
                                 </div> -->
 
                                 <div class="input-field col s12 m2">
-                                    <select materialize-select id="ngm-site_list_select_id-{{ $index }}" name="ngm-site_list_select_id-{{ $index }}"
+                                    <select materialize-select watch-model id="ngm-site_list_select_id-{{ $index }}" name="ngm-site_list_select_id-{{ $index }}"
                                         class="validate" ng-model="location.site_list_select_id"
                                         ng-options="item.site_list_select_id as item.site_list_select_name for item in project.lists.site_list_select"
                                         ng-change="ngmClusterLocations.updateYesorNo(project.lists,location)"

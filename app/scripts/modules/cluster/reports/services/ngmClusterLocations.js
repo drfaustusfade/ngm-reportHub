@@ -552,20 +552,21 @@ angular.module( 'ngmReportHub' )
               location.site_type_id = selected[0].site_type_id;
               location.site_type_name = selected[0].site_type_name;
             }
-            // to filter adminssites if site_type_id change;
-            ngmClusterLocations.filterLocations (project, $index, location);
-            // remove and set it likte location do not have adminsite list if adminSitesSelect empty when site_type_id not on the lists
-            // and change from "yes" to "no"  on site_list_select_id attributie;
-            if (!ngmClusterLocations.adminSitesSelect[$index].length && location.site_list_select_id === 'yes'){
-              location.site_list_select_id = 'no';
-              location.site_list_select_yes = 'No';
-              location.site_list_select_disabled = true;
-              // site
-              delete location.site_id;
-              delete location.site_name;
-              delete location.site_lng;
-              delete location.site_lat;
-            }
+          }
+          
+          // to filter adminssites if site_type_id change;
+          ngmClusterLocations.filterLocations(project, $index, location);
+          // remove and set it like location do not have adminsite list if adminSitesSelect empty when site_type_id not on the lists
+          // and change from "yes" to "no"  on site_list_select_id attributie;
+          if (!ngmClusterLocations.adminSitesSelect[$index].length && location.site_list_select_id === 'yes') {
+            location.site_list_select_id = 'no';
+            location.site_list_select_yes = 'No';
+            location.site_list_select_disabled = true;
+            // site
+            delete location.site_id;
+            delete location.site_name;
+            delete location.site_lng;
+            delete location.site_lat;
           }
         }, 10)
       },
@@ -788,11 +789,13 @@ angular.module( 'ngmReportHub' )
         if(ngmClusterLocations.adminSitesSelect[$index].length){
           // to ensure the site_id is string
           ngmClusterLocations.adminSitesSelect[$index].map((x) => {if (typeof x.site_id === 'number' ){ x.site_id = x.site_id.toString();} return x});
-          if (location.site_type_id)
-          // filter based on site_type_id
-          ngmClusterLocations.adminSitesSelect[$index] = ngmClusterLocations.adminSitesSelect[$index].filter(function (i) {
-            return i.site_type_id === location.site_type_id;
-          });
+
+          
+            // filter based on site_type_id
+            ngmClusterLocations.adminSitesSelect[$index] = ngmClusterLocations.adminSitesSelect[$index].filter(function (i) {
+              return i.site_type_id === location.site_type_id;
+            });
+          // }
         }
       },
       // reset location property
