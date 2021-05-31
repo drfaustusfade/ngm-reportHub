@@ -620,8 +620,8 @@ angular.module('ngm.widget.form.authentication', ['ngm.provider'])
 						}
 						// add defaults as admin
 						// $scope.panel.user.app_home = '/immap/';
-						$scope.panel.user.app_home = '/cluster/admin/' + $scope.panel.user.adminRpcode.toLowerCase() + '/' + $scope.panel.user.admin0pcode.toLowerCase();
-						$scope.panel.user.roles = [ 'COUNTRY_ADMIN', 'USER' ];
+						// $scope.panel.user.app_home = '/cluster/admin/' + $scope.panel.user.adminRpcode.toLowerCase() + '/' + $scope.panel.user.admin0pcode.toLowerCase();
+						// $scope.panel.user.roles = [ 'COUNTRY_ADMIN', 'USER' ];
 
 					} else {
 						delete $scope.panel.user.app_home;
