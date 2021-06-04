@@ -313,6 +313,9 @@ angular.module( 'ngm.widget.project.details', [ 'ngm.provider' ])
 					$scope.project.definition.target_beneficiaries = $scope.project.definition.target_beneficiaries.sort((a, b) => (a.createdAt > b.createdAt) ? 1 : ((b.createdAt > a.createdAt) ? -1 : 0));
 					$scope.paginated_target_beneficiaries = $scope.project.definition.target_beneficiaries.slice($scope.start_beneficiaries, $scope.end_beneficiaries);
 					// set admin1,2,3,4,5 && site_type && site_implementation
+					ngmClusterLocations.fetchInitialAdminSites($scope.project, $scope.project.definition.target_locations);
+					// set admin1,2,3,4,5 && site_type && site_implementation,
+					// comment this  function, because move to fetchInitalAdminSites
 					ngmClusterLocations.setLocationAdminSelect($scope.project, $scope.project.definition.target_locations);
 					// documents uploads
 					$scope.project.setTokenUpload();
@@ -3129,6 +3132,14 @@ angular.module( 'ngm.widget.project.details', [ 'ngm.provider' ])
 				// },
 
 				// <++++++++++++++++++++++++++++++++++++++++++++++++++++++++> 
+				// set location site_name_checked if not set before
+				setSiteNameChecked:function(location){
+					if (location.admin0pcode === 'ET'){
+						if (!location.site_name_checked){
+							location.site_name_checked = location.site_name? true: false;
+						}
+					}
+				},
 
 
 

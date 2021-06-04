@@ -161,7 +161,7 @@ angular.module( 'ngmReportHub' )
 				var rowComplete = 0;
 				angular.forEach( project.target_locations, function( d, i ){
 						if ( d.admin1pcode && d.admin1name && d.admin2pcode && d.admin2name){
-							if (d.admin0pcode === 'ET') {
+							if ((d.admin0pcode === 'NG') || (d.admin0pcode === 'ET' && !d.site_name_checked)) {
 								rowComplete++;
 							}else{
 								if (d.site_name) {
@@ -268,7 +268,7 @@ angular.module( 'ngmReportHub' )
 				}
 				// console.log('targetlocation-complete02');
 				// console.log(complete);
-				if (l.admin0pcode !== 'ET'){
+				if ((l.admin0pcode !== 'ET') || (l.admin0pcode === 'ET' && l.site_name_checked)){
 					if (!l.site_name) {
 						id = "label[for='" + 'ngm-site_name-' + i + "']";
 						$(id).addClass('error');
@@ -3029,7 +3029,7 @@ angular.module( 'ngmReportHub' )
 					complete = false;
 				}
 
-				if (l.admin0pcode !== 'ET') {
+				if (l.admin0pcode !== 'ET' || (l.admin0pcode === 'ET' && l.site_name_checked)) {
 					if(!l.site_name){
 						id = "label[for='ngm-new_location-site_name']";
 						$(id).addClass('error');

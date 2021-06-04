@@ -89,7 +89,7 @@
 										<td ng-if="project.definition.admin0pcode === 'COL'">{{'site_type' | translate}}</td>
 										<!-- <td ng-if="project.definition.admin0pcode === 'NG'"> SiteName?</td> -->
 										<td ng-if="project.definition.admin0pcode !== 'AF' && project.definition.admin0pcode !== 'COL'">{{'from_list'|translate}}?</td>
-										<td>{{'site_name'|translate}}* </td>
+										<td>{{'site_name'|translate}}{{(project.definition.admin0pcode === 'NG')?'':'*'}} </td>
 										<td ng-if="project.definition.implementing_partners_checked">{{'partner'|translate}}</td>
 							      <td ng-show="project.definition.project_status !== 'complete'">{{'edit'|translate}}</td>
 							    </tr>

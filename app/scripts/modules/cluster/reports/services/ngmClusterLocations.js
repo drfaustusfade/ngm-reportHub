@@ -6,7 +6,7 @@
  *
  */
 angular.module( 'ngmReportHub' )
-	.factory( 'ngmClusterLocations', [ '$http', '$filter', '$timeout', 'ngmAuth','$translate', '$rootScope', 'ngmClusterBeneficiaries', 'ngmCbLocations', function( $http, $filter, $timeout, ngmAuth, $translate, $rootScope, ngmClusterBeneficiaries, ngmCbLocations ) {
+  .factory('ngmClusterLocations', ['$q', '$http', '$filter', '$timeout', 'ngmAuth', '$translate', '$rootScope', 'ngmClusterBeneficiaries', 'ngmCbLocations', function ($q, $http, $filter, $timeout, ngmAuth, $translate, $rootScope, ngmClusterBeneficiaries, ngmCbLocations ) {
 
 		ngmClusterLocations = {
 
@@ -26,8 +26,24 @@ angular.module( 'ngmReportHub' )
         });
         // trigger form update
         ngmClusterLocations.adminOnChange( project.lists, 'admin3pcode', locations.length-1, ngmClusterLocations.new_location.admin3pcode, ngmClusterLocations.new_location );
-        ngmClusterLocations.filterLocations(project, 0, ngmClusterLocations.new_location)
+        // ngmClusterLocations.filterLocations(project, 0, ngmClusterLocations.new_location)
         ngmClusterLocations.setSiteTypeAndImplementationSelect(project);
+        // check if this admin1pcode have adminsite or not
+        var selected_sites = $filter('filter')(project.lists.adminSites, { admin1pcode: ngmClusterLocations.new_location.admin1pcode }, true);
+        if(!selected_sites.length){
+          $http({
+            method: 'GET',
+            url: ngmAuth.LOCATION + '/api/list/getAdminSites?admin0pcode='
+              + project.definition.admin0pcode
+              + '&admin1pcode=' + ngmClusterLocations.new_location.admin1pcode
+          }).then(function (result) {
+              project.lists.adminSites = project.lists.adminSites.concat(result.data);
+              ngmClusterLocations.filterLocations(project, 0, ngmClusterLocations.new_location)
+  
+          });
+        }else{
+          ngmClusterLocations.filterLocations(project, 0, ngmClusterLocations.new_location)
+        }
         // lists, pcode, $index, $data, target_location
         ngmClusterLocations.openAddNewLocation = !ngmClusterLocations.openAddNewLocation;
       },
@@ -64,12 +80,12 @@ angular.module( 'ngmReportHub' )
           username: project.username
         }
 
-        // add site select if admin0pcode !== 'CB'
-        if ( project.admin0pcode !== 'CB' ) {
-          inserted.site_list_select_id = 'no';
-          inserted.site_list_select_yes = 'No';
-          inserted.site_list_select_disabled = true;
-        }
+        // // add site select if admin0pcode !== 'CB'
+        // if ( project.admin0pcode !== 'CB' ) {
+        //   inserted.site_list_select_id = 'no';
+        //   inserted.site_list_select_yes = 'No';
+        //   inserted.site_list_select_disabled = true;
+        // }
 
         // clone
         var length = locations.length;
@@ -93,11 +109,19 @@ angular.module( 'ngmReportHub' )
 					inserted.implementing_partners = angular.copy(project.implementing_partners)
 				}
 
+        // add site select if admin0pcode !== 'CB'
+        if (project.admin0pcode !== 'CB') {
+          inserted.site_list_select_id = 'no';
+          inserted.site_list_select_yes = 'No';
+          inserted.site_list_select_disabled = true;
+        }
+
         // set createdAt
         inserted.createdAt = new Date().toISOString();
 
         if (project.admin0pcode === 'ET') {
-          // inserted.site_name_checked = false;
+          // //hide feature , if new location admin0pcode is ET / ethiopia set attribute site_name_checked to true for now its hide
+          // inserted.site_name_checked = true;
           inserted.site_name = '';
         }
         // set targets
@@ -510,7 +534,7 @@ angular.module( 'ngmReportHub' )
         }, 10)
       },
       // to update site type
-      updateSiteType: function (lists, location) {
+      updateSiteType: function (project,lists, location,$index) {
         $timeout(function () {
           // attr
           var selected = [];
@@ -528,6 +552,21 @@ angular.module( 'ngmReportHub' )
               location.site_type_id = selected[0].site_type_id;
               location.site_type_name = selected[0].site_type_name;
             }
+          }
+          
+          // to filter adminssites if site_type_id change;
+          ngmClusterLocations.filterLocations(project, $index, location);
+          // remove and set it like location do not have adminsite list if adminSitesSelect empty when site_type_id not on the lists
+          // and change from "yes" to "no"  on site_list_select_id attributie;
+          if (!ngmClusterLocations.adminSitesSelect[$index].length && location.site_list_select_id === 'yes') {
+            location.site_list_select_id = 'no';
+            location.site_list_select_yes = 'No';
+            location.site_list_select_disabled = true;
+            // site
+            delete location.site_id;
+            delete location.site_name;
+            delete location.site_lng;
+            delete location.site_lat;
           }
         }, 10)
       },
@@ -548,7 +587,7 @@ angular.module( 'ngmReportHub' )
               delete selected[0].id;
 
               console.log( selected[0].site_name )
-
+              
               angular.merge(location, selected[0]);
             }
           }
@@ -569,7 +608,11 @@ angular.module( 'ngmReportHub' )
             selected = $filter('filter')(lists.site_list_select, { site_list_select_id: location.site_list_select_id }, true);
             location.site_list_select_name = selected[0].site_list_select_name;
           }
-
+          
+          if (location.site_list_select_id && location.site_list_select_id === 'no'){
+            location.site_name = '';
+            location.site_id = '';
+          }
         }, 10)
       },
       // fail
@@ -743,6 +786,17 @@ angular.module( 'ngmReportHub' )
             return i.admin5pcode === location.admin5pcode;
           });
         }
+        if(ngmClusterLocations.adminSitesSelect[$index].length){
+          // to ensure the site_id is string
+          ngmClusterLocations.adminSitesSelect[$index].map((x) => {if (typeof x.site_id === 'number' ){ x.site_id = x.site_id.toString();} return x});
+
+          
+            // filter based on site_type_id
+            ngmClusterLocations.adminSitesSelect[$index] = ngmClusterLocations.adminSitesSelect[$index].filter(function (i) {
+              return i.site_type_id === location.site_type_id;
+            });
+          // }
+        }
       },
       // reset location property
       resetLocations: function (project, type, location) {
@@ -805,6 +859,26 @@ angular.module( 'ngmReportHub' )
         angular.forEach(locations, function (location, $index) {
           ngmClusterLocations.filterLocations(project, $index, location);
         });
+
+        // var locationAdmin1pcodeTag = [];
+        // angular.forEach(locations, function (location, $index) {
+          
+        //     $http({
+        //       method: 'GET',
+        //       url: ngmAuth.LOCATION + '/api/list/getAdminSites?admin0pcode='
+        //         + project.definition.admin0pcode
+        //         + '&admin1pcode=' + location.admin1pcode
+        //     }).then(function (result) {
+        //       if (locationAdmin1pcodeTag.indexOf(location.admin1pcode) < 0) {
+        //         project.lists.adminSites = project.lists.adminSites.concat(result.data);
+        //         ngmClusterLocations.filterLocations(project, $index, location);
+        //         locationAdmin1pcodeTag.push(location.admin1pcode)
+        //       }
+        //       ngmClusterLocations.filterLocations(project, $index, location);
+        //     });
+          
+          
+        // });
       },
       // to set list of site_type && site_implementation
       setSiteTypeAndImplementationSelect: function (project) {
@@ -842,6 +916,56 @@ angular.module( 'ngmReportHub' )
           ngmClusterLocations.site_implementationFilter = ngmClusterLocations.site_implementationFilter.filter((item, index) => ngmClusterLocations.site_implementationFilter.indexOf(item) === index);
           ngmClusterLocations.site_typeFilter = ngmClusterLocations.site_typeFilter.filter((item, index) => ngmClusterLocations.site_typeFilter.indexOf(item) === index);
         }
+      },
+      // site_namechecked field show
+      // function to reset attribute site_name,site_list_select_id,site_list_select_name, site_list_select_disabled, when site_name_checked attrbute set to false/unchecked
+      siteNameCheckedReset:function(location){
+        if (!location.site_name_checked){
+          location.site_name ='';
+          if (location.site_list_select_id){
+            location.site_list_select_id = 'no';
+            location.site_list_select_name = 'No';
+            location.site_list_select_disabled = true;
+          }
+        }
+      },
+      fetchInitialAdminSites:function(project,locations){
+      
+       var admin1=[];
+       var req_adminsites =[]
+       if(locations.length){
+         angular.forEach(locations, function (location, $index) {
+           if (((location.site_list_select_id)) || location.site_type){
+             var selected_sites = $filter('filter')(project.lists.adminSites, { admin1pcode: location.admin1pcode }, true);
+            // check if adminsites for admin1pcode is on the list, if not on the list make request
+             if (!selected_sites.length && admin1.indexOf(location.admin1pcode) < 0) {
+                 admin1.push(location.admin1pcode)
+                 var request = $http({
+                   method: 'GET',
+                   url: ngmAuth.LOCATION + '/api/list/getAdminSites?admin0pcode='
+                     + project.definition.admin0pcode
+                     + '&admin1pcode=' + location.admin1pcode
+                 })
+                 req_adminsites.push(request);
+               }
+           }
+ 
+           });
+           
+          //  make request
+         if(req_adminsites.length){   
+           $q.all(req_adminsites).then(function (results) {
+             
+             for(var i=0;i<results.length ;i++){
+               project.lists.adminSites = project.lists.adminSites.concat(results[i].data)
+             }
+             // set admin1, 2, 3, 4, 5 && site_type && site_implementation
+             ngmClusterLocations.setLocationAdminSelect(project, locations)
+             
+           })
+         }
+       }
+
       }
 
 
